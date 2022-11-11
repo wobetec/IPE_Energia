@@ -19,11 +19,11 @@
                 </thead>
                 <tbody>
                     {% for geracao in geracoes %}<tr>
-                        <td>{{ geracao["gerador"] }}</td>
-                        <td>{{ geracao["data_uso"] }}</td>
-                        <td>{{ geracao["efetiva"] }}</td>
-                        <td>{{ geracao["reativa"] }}</td>
-                        <td>{{ geracao["consumo"] }}</td>
+                        <td>{{ geracao["name"] }}</td>
+                        <td>{{ geracao["data_uso"] | date }}</td>
+                        <td>{{ geracao["efetiva"] | kwh }}</td>
+                        <td>{{ geracao["reativa"] | kwh }}</td>
+                        <td>{{ geracao["consumo"] | brl }}</td>
                         <td>
                             <button>
                                 <a href={{ "/geracao/edit/"+ geracao["id"]|string }}>EDIT</a>

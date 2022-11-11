@@ -22,13 +22,13 @@
                 <tbody>
                     {% for despesa in despesas %}
                     <tr>
-                        <td>{{ despesa["data_fatura"] }}</td>
+                        <td>{{ despesa["data_fatura"] | date }}</td>
                         <td>{{ despesa["valor"] | brl }}</td>
                         <td>{{ despesa["efetivo"] }}</td>
-                        <td>{{ despesa["area"] }}</td>
-                        <td>{{ despesa["efetiva"] }}</td>
-                        <td>{{ despesa["reativa"] }}</td>
-                        <td>{{ despesa["multa"] }}</td>
+                        <td>{{ despesa["area"] | m2 }}</td>
+                        <td>{{ despesa["efetiva"] | kwh }}</td>
+                        <td>{{ despesa["reativa"] | kwh }}</td>
+                        <td>{{ despesa["multa"] | brl }}</td>
                         <td>
                             <button>
                                 <a href={{ "/despesa/edit/"+ despesa["id"]|string }}>EDIT</a>

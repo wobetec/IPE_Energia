@@ -1,9 +1,12 @@
 from flask import redirect, render_template, request, session
 from functools import wraps
+from app.var import DEFAULT_APOLOGY
 
 
 def apology(message, code=400):
-    """Render message as an apology to user."""
+    """
+        Render message as an apology to user.
+    """
     def escape(s):
         """
         Escape special characters.
@@ -13,7 +16,11 @@ def apology(message, code=400):
                          ("%", "~p"), ("#", "~h"), ("/", "~s"), ("\"", "''")]:
             s = s.replace(old, new)
         return s
-    
+
+    if message in DEFAULT_APOLOGY:
+        code = DEFAULT_APOLOGY[message]["code"]
+        message = DEFAULT_APOLOGY[message]["message"]
+
     return render_template("apology.html", top=code, bottom=escape(message)), code
 
 
@@ -30,9 +37,40 @@ def login_required(f):
     return decorated_function
 
 
-def brl(value):
-    """Format value as BRL."""
-    return f"R${value:,.2f}"
+def access_level_required(level):
+    """
+        Decorator to check access level
+    """
+    def decorator(f):
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
+            if level != None:
+                if session["main"]["access_level"] > level:
+                    return apology(f"access level needed {level}")
+            return f(*args, **kwargs)
+        return decorated_function
+    return decorator
+
+
+class filters():
+    def brl(value):
+        """Format value as BRL."""
+        return f"R${value:,.2f}"
+
+    def kwh(value):
+        """Format value as energy in kwh"""
+        return f"{value:,.2f}kWh"
+
+    def m2(value):
+        """Format value as energy in kwh"""
+        return f"{value:,.2f}m\u00b2"
+    
+    def date(value):
+        year = value[:4]
+        month = value[5:7]
+        day = value[8:]
+        return f"{day}/{month}/{year}"
+
 
 
 def recursive_get_subordinados(db, OM):

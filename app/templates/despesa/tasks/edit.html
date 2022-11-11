@@ -4,23 +4,70 @@
 
 {% block task %}
     <form action="/despesa/edit" method="post">
-        <div class="mb-3">
-            <input class="form-control mx-auto w-auto" name="valor" placeholder="Valor" type="number" value="{{despesa['valor']}}">
+        <div class="row align-items-center d-flex justify-content-center mb-3">
+            <div class="col-auto">
+                <label for="fieldName" class="col-form-label">Valor:</label>
+            </div>
+            <div class="col-auto">
+                <div class="input-group mx-auto w-auto">
+                    <span class="input-group-text">R$</span>
+                    <input type="number" class="form-control" name="valor" placeholder="Valor" value="{{despesa['valor']}}" >
+                </div>
+            </div>
         </div>
-        <div class="mb-3">
-            <input class="form-control mx-auto w-auto" name="demanda" placeholder="Demanda" type="number" value="{{despesa['demanda']}}">
+        <div class="row align-items-center d-flex justify-content-center mb-3">
+            <div class="col-auto">
+                <label for="fieldName" class="col-form-label">Demanda:</label>
+            </div>
+            <div class="col-auto">
+                <div class="input-group mx-auto w-auto">
+                    <input type="number" class="form-control" name="demanda" placeholder="Demanda" value="{{despesa['demanda']}}" >
+                    <span class="input-group-text">kWh</span>
+                </div>
+            </div>
         </div>
-        <div class="mb-3">
-            <input class="form-control mx-auto w-auto" name="efetiva" placeholder="Efetiva" type="number" value="{{despesa['efetiva']}}">
+        <div class="row align-items-center d-flex justify-content-center mb-3">
+            <div class="col-auto">
+                <label for="fieldName" class="col-form-label">Efetiva:</label>
+            </div>
+            <div class="col-auto">
+                <div class="input-group mx-auto w-auto">
+                    <input type="number" class="form-control" name="efetiva" placeholder="Efetiva" value="{{despesa['efetiva']}}" >
+                    <span class="input-group-text">kWh</span>
+                </div>
+            </div>
         </div>
-        <div class="mb-3">
-            <input class="form-control mx-auto w-auto" name="reativa" placeholder="Reativa" type="number" value="{{despesa['reativa']}}">
+        <div class="row align-items-center d-flex justify-content-center mb-3">
+            <div class="col-auto">
+                <label for="fieldName" class="col-form-label">Reativa:</label>
+            </div>
+            <div class="col-auto">
+                <div class="input-group mx-auto w-auto">
+                    <input type="number" class="form-control" name="reativa" placeholder="Reativa" value="{{despesa['reativa']}}" >
+                    <span class="input-group-text">kWh</span>
+                </div>
+            </div>
         </div>
-        <div class="mb-3">
-            <input class="form-control mx-auto w-auto" name="multa" placeholder="Multa" type="number" value="{{despesa['multa']}}">
+        <div class="row align-items-center d-flex justify-content-center mb-3">
+            <div class="col-auto">
+                <label for="fieldName" class="col-form-label">Multa:</label>
+            </div>
+            <div class="col-auto">
+                <div class="input-group mx-auto w-auto">
+                    <span class="input-group-text">R$</span>
+                    <input type="number" class="form-control" name="multa" placeholder="Multa" value="{{despesa['multa']}}">
+                </div>
+            </div>
         </div>
-        <div class="mb-3">
-            <input class="form-control mx-auto w-auto" id="data_fatura" name="data_fatura" type="date" value="{{despesa['data_fatura']}}">
+        <div class="row align-items-center d-flex justify-content-center mb-3">
+            <div class="col-auto">
+                <label for="fieldName" class="col-form-label">Data fatura:</label>
+            </div>
+            <div class="col-auto">
+                <div class="input-group mx-auto w-auto">
+                    <input class="form-control mx-auto w-auto" id="data_fatura" name="data_fatura" type="date" value="{{despesa['data_fatura']}}">
+                </div>
+            </div>
         </div>
         <button class="btn btn-primary" type="submit">Atualizar</button>
     </form>

@@ -32,14 +32,6 @@ body {
     text-align: left;
 }
 
-/* .container {
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 15px;
-    padding-right: 15px;
-    text-align: center;
-    width: 90%;
-} */
 
 .header {
     background-color: #477bff;
@@ -55,7 +47,6 @@ body {
     padding-right: 2rem;
     padding-top: 0.5rem;
 }
-
 
 
 h1 {
@@ -84,7 +75,6 @@ input[type="submit"]:hover, button:hover {
 
 input[type="text"], input[type="number"] {
     line-height: 1.8;
-    border: 1px solid;
     border-radius: 0.25rem;
     width: 25%;
 }
@@ -136,3 +126,4 @@ select:hover {
 a{
     text-decoration: none;
 }
+
