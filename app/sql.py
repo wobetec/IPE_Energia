@@ -1,3 +1,7 @@
+"""
+    copy from https://github.com/cs50/python-cs50/blob/main/src/cs50/sql.py
+"""
+
 import threading
 
 # Thread-local data
