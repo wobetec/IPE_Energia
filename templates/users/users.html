@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Usuarios
+{% endblock %}
+
+{% block mother %}users{% endblock %}
+
+{% block main %}
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+        <a class="nav-link" id="add" aria-current="page" href="/users/add">Adicionar</a>
+        </li>
+        <li class="nav-item">
+        <a class="nav-link disabled" id="edit" href="/users/edit">Editar</a>
+        </li>
+        <li class="nav-item">
+        <a class="nav-link" id="list" href="/users/list">Subordinados</a>
+        </li>
+    </ul>
+    
+    <div id="suboption" style="display: none;">{% block selected %}{% endblock %}</div>
+
+    <script type="text/javascript">
+        let suboption = document.getElementById("suboption").innerHTML
+        document.getElementById(suboption).classList.add("active")
+    </script>
+
+    {% block task %}{% endblock %}
+{% endblock %}

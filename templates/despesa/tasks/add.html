@@ -1,0 +1,41 @@
+{% extends "/despesa/despesa.html" %}
+
+{% block selected %}add{% endblock %}
+
+{% block task %}
+    <form action="/despesa/add" method="post">
+        <div class="mb-3">
+            <input class="form-control mx-auto w-auto" name="valor" placeholder="Valor" type="number">
+        </div>
+        <div class="mb-3">
+            <input class="form-control mx-auto w-auto" name="demanda" placeholder="Demanda" type="number">
+        </div>
+        <div class="mb-3">
+            <input class="form-control mx-auto w-auto" name="efetiva" placeholder="Efetiva" type="number">
+        </div>
+        <div class="mb-3">
+            <input class="form-control mx-auto w-auto" name="reativa" placeholder="Reativa" type="number">
+        </div>
+        <div class="mb-3">
+            <input class="form-control mx-auto w-auto" name="multa" placeholder="Multa" type="number" value = 0>
+        </div>
+        <div class="mb-3">
+            <input class="form-control mx-auto w-auto" id="data_fatura" name="data_fatura" type="date">
+        </div>
+        <button class="btn btn-primary" type="submit">Adicionar</button>
+    </form>
+
+    <script type="text/javascript">
+        var date = new Date();
+
+        var day = date.getDate();
+        var month = date.getMonth() + 1;
+        var year = date.getFullYear();
+
+        if (month < 10) month = "0" + month;
+        if (day < 10) day = "0" + day;
+
+        var today = year + "-" + month + "-" + day;
+        document.getElementById('data_fatura').value = today;
+    </script>
+{% endblock %}

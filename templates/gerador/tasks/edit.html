@@ -1,0 +1,15 @@
+{% extends "/gerador/gerador.html" %}
+
+{% block selected %}edit{% endblock %}
+
+{% block task %}
+    <form action="/despesa/edit" method="post">
+        <div class="mb-3">
+            <input class="form-control mx-auto w-auto" name="name" placeholder="Name" type="text" value="{{ gerador['name'] }}">
+        </div>
+        <div class="mb-3">
+            <input class="form-control mx-auto w-auto" name="tipo" placeholder="Tipo" type="text" value="{{ gerador['tipo'] }}">
+        </div>
+        <button class="btn btn-primary" type="submit">Atualizar</button>
+    </form>
+{% endblock %}

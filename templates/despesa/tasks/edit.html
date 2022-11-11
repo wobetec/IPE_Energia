@@ -1,0 +1,27 @@
+{% extends "/despesa/despesa.html" %}
+
+{% block selected %}edit{% endblock %}
+
+{% block task %}
+    <form action="/despesa/edit" method="post">
+        <div class="mb-3">
+            <input class="form-control mx-auto w-auto" name="valor" placeholder="Valor" type="number" value="{{despesa['valor']}}">
+        </div>
+        <div class="mb-3">
+            <input class="form-control mx-auto w-auto" name="demanda" placeholder="Demanda" type="number" value="{{despesa['demanda']}}">
+        </div>
+        <div class="mb-3">
+            <input class="form-control mx-auto w-auto" name="efetiva" placeholder="Efetiva" type="number" value="{{despesa['efetiva']}}">
+        </div>
+        <div class="mb-3">
+            <input class="form-control mx-auto w-auto" name="reativa" placeholder="Reativa" type="number" value="{{despesa['reativa']}}">
+        </div>
+        <div class="mb-3">
+            <input class="form-control mx-auto w-auto" name="multa" placeholder="Multa" type="number" value="{{despesa['multa']}}">
+        </div>
+        <div class="mb-3">
+            <input class="form-control mx-auto w-auto" id="data_fatura" name="data_fatura" type="date" value="{{despesa['data_fatura']}}">
+        </div>
+        <button class="btn btn-primary" type="submit">Atualizar</button>
+    </form>
+{% endblock %}

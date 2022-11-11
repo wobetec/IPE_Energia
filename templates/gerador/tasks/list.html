@@ -1,0 +1,39 @@
+{% extends "/gerador/gerador.html" %}
+
+{% block selected %}list{% endblock %}
+
+{% block task %}
+    <div class="container">
+        <div class="section">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Tipo</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for gerador in geradores %}
+                    <tr>
+                        <td>{{ gerador["name"] }}</td>
+                        <td>{{ gerador["tipo"] }}</td>
+                        <td>
+                            <button>
+                                <a href={{ "/gerador/edit/"+ gerador["id"]|string }}>EDIT</a>
+                            </button>
+                        </td>
+                        <td>
+                            <button>
+                                <a href={{ "/gerador/delete/"+ gerador["id"]|string }}>DEL</a>
+                            </button>
+                        </td>
+
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

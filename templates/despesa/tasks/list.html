@@ -1,0 +1,49 @@
+{% extends "/despesa/despesa.html" %}
+
+{% block selected %}list{% endblock %}
+
+{% block task %}
+    <div class="container">
+        <div class="section">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Valor</th>
+                        <th>Efetivo</th>
+                        <th>Area</th>
+                        <th>Efetiva</th>
+                        <th>Reativa</th>
+                        <th>Multa</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for despesa in despesas %}
+                    <tr>
+                        <td>{{ despesa["data_fatura"] }}</td>
+                        <td>{{ despesa["valor"] | brl }}</td>
+                        <td>{{ despesa["efetivo"] }}</td>
+                        <td>{{ despesa["area"] }}</td>
+                        <td>{{ despesa["efetiva"] }}</td>
+                        <td>{{ despesa["reativa"] }}</td>
+                        <td>{{ despesa["multa"] }}</td>
+                        <td>
+                            <button>
+                                <a href={{ "/despesa/edit/"+ despesa["id"]|string }}>EDIT</a>
+                            </button>
+                        </td>
+                        <td>
+                            <button>
+                                <a href={{ "/despesa/delete/"+ despesa["id"]|string }}>DEL</a>
+                            </button>
+                        </td>
+
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends "/users/users.html" %}
+
+{% block selected %}edit{% endblock %}
+
+{% block task %}
+    <form action={{"/edit/" + user["id"]|string }} method="post">
+        <div class="mb-3">
+            <select name="access_level" class="form-control mx-auto w-auto" value="{{ user['access_level'] }}">
+                <option disable selected>Access</option>
+                {% for option in access %}
+                    <option value="{{option}}" >{{access[option]}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button class="btn btn-primary" type="submit">Save</button>
+    </form>
+    
+    
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "/geracao/geracao.html" %}
+
+{% block selected %}edit{% endblock %}
+
+{% block task %}
+    <form action="/geracao/edit" method="post">
+        <div class="mb-3">
+        <select name="gerador_id" class="form-control mx-auto w-auto" value="{{ geracao['gerador_id'] }}">
+            <option disable selected>Gerador</option>
+            {% for gerador in geradores %}
+                <option value="{{gerador['id']}}" >{{ gerador["name"] }}</option>
+            {% endfor %}
+        </select>
+        <div class="mb-3">
+            <input class="form-control mx-auto w-auto" name="efetiva" placeholder="Efetiva" type="number" value="{{ geracao['efetiva'] }}">
+        </div>
+        <div class="mb-3">
+            <input class="form-control mx-auto w-auto" name="reativa" placeholder="Reativa" type="number" value="{{ geracao['reativa'] }}">
+            </div>
+        </div>
+        <div class="mb-3">
+            <input class="form-control mx-auto w-auto" name="consumo" placeholder="Consumo" type="number" value="{{ geracao['consumo'] }}">
+        </div>
+        <div class="mb-3">
+            <input class="form-control mx-auto w-auto" id="data_uso" name="data_uso" type="date" value="{{ geracao['data_uso'] }}">
+        </div>
+        <button class="btn btn-primary" type="submit">Atualizar</button>
+    </form>
+{% endblock %}
