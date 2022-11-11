@@ -5,13 +5,12 @@ from app.helpers import brl
 
 
 # define app
-app = Flask(__name__)
+app = Flask(__name__, instance_relative_config=True)
 
 
-# configure app
-app.config["TEMPLATES_AUTO_RELOAD"] = True
-app.config["SESSION_PERMANENT"] = False
-app.config["SESSION_TYPE"] = "filesystem"  # Better than cookies
+# configure app usin /instance
+#app.config.from_object('config')
+app.config.from_pyfile('config.py')
 
 
 # custom jinja
