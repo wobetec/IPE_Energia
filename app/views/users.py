@@ -89,7 +89,7 @@ def register(cheat=None, password=None):
         )
 
         # check if there is no user "esdras"
-        if rows == 0:
+        if len(rows) == 0:
             hashed = generate_password_hash(password)
             db.execute(
                 "INSERT INTO users (username, hash, quartel_id, access_level) VALUES(?, ?, ?, ?)",
