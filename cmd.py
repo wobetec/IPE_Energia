@@ -27,7 +27,7 @@ if option == "migrate":
         pass
 
     print("Building...")
-    os.system("type models.sql | sqlite3 database.db")
+    os.system("cat models.sql | sqlite3 database.db")
     print("Done!")
 
     sys.exit()
