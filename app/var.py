@@ -1,8 +1,8 @@
 ACCESS_LEVEL = {
-    1: "Master", 
-    2: "Full + subordinados", 
-    3: "Full", 
-    4: "Inserir dados"
+    1: "Admin - Full", 
+    2: "Admin inter OMs", 
+    3: "Admin intra OM", 
+    4: "Inserir/alterar dados"
 }
 
 DEFAULT_APOLOGY = {

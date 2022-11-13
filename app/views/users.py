@@ -1,7 +1,7 @@
 from app import app, db
 from flask import redirect, render_template, request, session
 from werkzeug.security import check_password_hash, generate_password_hash
-from app.helpers import apology, login_required
+from app.helpers import apology, login_required, access_level_required
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -107,6 +107,7 @@ def register(cheat=None, password=None):
 @app.route("/users", methods=["GET"])
 @app.route("/users/list", methods=["GET"])
 @login_required
+@access_level_required(3)
 def usersList():
     """
         List all users under the access_level of user
@@ -123,12 +124,13 @@ def usersList():
 
 @app.route("/users/add", methods=["GET", "POST"])
 @login_required
+@access_level_required(3)
 def userAdd():
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
         confirmation = request.form.get("confirmation")
-        access_level = request.form.get("access_level")
+        access_level = int(request.form.get("access_level"))
 
         if db.execute(
             "SELECT * FROM users WHERE username = ?",
@@ -138,6 +140,9 @@ def userAdd():
 
         elif password == "" or password != confirmation:
             return apology("Password is blank or the passwords do not match")
+        
+        elif access_level <= session["main"]["access_level"]:
+            return apology("forbiden")
 
         else:
             hashed = generate_password_hash(password)
@@ -156,9 +161,13 @@ def userAdd():
 
 @app.route("/users/edit/<int:id>", methods=["GET", "POST"])
 @login_required
+@access_level_required(3)
 def userEdit(id=None):
     if request.method == "POST":
-        access_level = request.form.get("access_level")
+        access_level = int(request.form.get("access_level"))
+
+        if access_level <= session["main"]["access_level"]:
+            return apology("forbiden")
 
         db.execute(
             "UPDATE users SET access_level = ? WHERE id = ?",
@@ -175,8 +184,43 @@ def userEdit(id=None):
 
 @app.route("/users/edit/<int:id>", methods=["POST"])
 @login_required
+@access_level_required(3)
 def userDelete(id=None):
+
+    access_level = db.execute("SELECT access_level FROM users WHERE id=?", id)
+
+    if access_level <= session["main"]["access_level"]:
+            return apology("forbiden")
+
     db.execute("DELETE FROM users WHERE id=?", id)
 
     return redirect("/users/list")
 
+
+@app.route("/users/profile", methods=["POST", "GET"])
+@login_required
+def userProfile():
+
+    if request.method == "POST":
+        id = session["user_id"]
+        user = db.execute("SELECT * FROM users WHERE id = ?", id)[0]
+
+        old = request.form.get("old")
+        password = request.form.get("password")
+        confirmation = request.form.get("confirmation")
+
+        if not check_password_hash(user["hash"], old):
+            apology("wrong old password")
+        elif password == "" or password != confirmation:
+            return apology("Password is blank or the passwords do not match")
+        
+        hashed = generate_password_hash(password)
+        db.execute(
+            "UPDATE users SET hash = ? WHERE id = ?",
+            hashed,
+            id
+        )
+
+        return redirect("/")
+
+    return render_template("users/profile/profile.html")

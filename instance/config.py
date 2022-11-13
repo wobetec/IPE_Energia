@@ -5,3 +5,6 @@ TEMPLATES_AUTO_RELOAD = True
 SESSION_PERMANENT = False
 SESSION_TYPE = "filesystem" 
 SECRET_KEY = 'Sm9obiBTY2hyb20ga2lja3MgYXNz'
+
+UPLOAD_FOLDER = "/storage"
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}

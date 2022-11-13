@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Profile
+{% endblock %}
+
+{% block main %}
+    <h1>Change password</h1>
+    <form action="/users/profile" method="post">
+        <div class="row g-3 align-items-center d-flex justify-content-center mb-3">
+            <div class="col-auto">
+                <label for="fieldName" class="col-form-label">Old password:</label>
+            </div>
+            <div class="col-auto">
+                <input autocomplete="off" class="form-control mx-auto w-auto" name="old" placeholder="Old password" type="password">
+            </div>
+        </div>
+        <div class="row g-3 align-items-center d-flex justify-content-center mb-3">
+            <div class="col-auto">
+                <label for="fieldName" class="col-form-label">Password:</label>
+            </div>
+            <div class="col-auto">
+                <input autocomplete="off" class="form-control mx-auto w-auto" name="password" placeholder="Password" type="password">
+            </div>
+        </div>
+        <div class="row g-3 align-items-center d-flex justify-content-center mb-3">
+            <div class="col-auto">
+                <label for="fieldName" class="col-form-label">Confirmation:</label>
+            </div>
+            <div class="col-auto">
+                <input autocomplete="off" class="form-control mx-auto w-auto" name="confirmation" placeholder="Confirmation" type="password">
+            </div>
+        </div>
+        <button class="btn btn-primary" type="submit">Update</button>
+    </form>
+{% endblock %}

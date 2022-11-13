@@ -1,11 +1,12 @@
 from app import app, db
 from flask import redirect, render_template, request, session
-from app.helpers import apology, login_required
+from app.helpers import apology, login_required, access_level_required
 
 
 @app.route("/geracao", methods=["GET"])
 @app.route("/geracao/list", methods=["GET"])
 @login_required
+@access_level_required(4)
 def geracaoList():
     geracoes = db.execute(
         "SELECT geracao.*, geradores.name FROM geracao JOIN geradores ON geradores.id = geracao.gerador_id WHERE geradores.id = ?",
@@ -17,6 +18,7 @@ def geracaoList():
 
 @app.route("/geracao/add", methods=["GET", "POST"])
 @login_required
+@access_level_required(4)
 def geracaoAdd():
     if request.method == "POST":
         gerador_id = request.form.get("gerador_id")
@@ -51,6 +53,7 @@ def geracaoAdd():
 
 @app.route("/geracao/edit/<int:id>", methods=["GET", "POST"])
 @login_required
+@access_level_required(4)
 def geracaoEdit(id=None):
     if request.method == "POST":
         gerador_id = request.form.get("gerador_id")
@@ -88,6 +91,7 @@ def geracaoEdit(id=None):
 
 @app.route("/geracao/delete/<int:id>", methods=["POST"])
 @login_required
+@access_level_required(4)
 def delete(id):
     db.execute("DELETE FROM geracao WHERE id=?", id)
 

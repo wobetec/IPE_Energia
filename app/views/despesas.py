@@ -1,11 +1,12 @@
 from app import app, db
 from flask import redirect, render_template, request, session
-from app.helpers import apology, login_required
+from app.helpers import apology, login_required, access_level_required
 
 
 @app.route("/despesa", methods=["GET", "POST"])
 @app.route("/despesa/add", methods=["GET", "POST"])
 @login_required
+@access_level_required(4)
 def despesaAdd():
     if request.method == "POST":
         quartel_id = session["quartel"]["quartel_id"]
@@ -51,6 +52,7 @@ def despesaAdd():
 
 @app.route("/despesa/edit/<int:id>", methods=["GET", "POST"])
 @login_required
+@access_level_required(4)
 def despesaEdit(id=None):
     if request.method == "POST":
         quartel_id = session["quartel"]["quartel_id"]
@@ -100,6 +102,7 @@ def despesaEdit(id=None):
 
 @app.route("/despesa/list", methods=["GET"])
 @login_required
+@access_level_required(4)
 def despesaList():
     despesas = db.execute(
         "SELECT * FROM despesas WHERE quartel_id=?",
@@ -110,6 +113,7 @@ def despesaList():
 
 @app.route("/despesa/delete", methods=["POST"])
 @login_required
+@access_level_required(4)
 def despesaDelete():
     db.execute("DELETE FROM despesas WHERE id=?", id)
 

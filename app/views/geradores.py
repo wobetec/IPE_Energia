@@ -1,11 +1,12 @@
 from app import app, db
 from flask import redirect, render_template, request, session
-from app.helpers import apology, login_required
+from app.helpers import apology, login_required, access_level_required
 
 
 @app.route("/gerador", methods=["GET"])
 @app.route("/gerador/list", methods=["GET"])
 @login_required
+@access_level_required(4)
 def geradorList():
     geradores = db.execute(
         "SELECT * FROM geradores WHERE quartel_id=?",
@@ -16,6 +17,7 @@ def geradorList():
 
 @app.route("/gerador/add", methods=["GET", "POST"])
 @login_required
+@access_level_required(3)
 def geradorAdd():
     if request.method == "POST":
         quartel_id = session["quartel"]["quartel_id"]
@@ -43,6 +45,7 @@ def geradorAdd():
 
 @app.route("/gerador/edit/<int:id>", methods=["GET", "POST"])
 @login_required
+@access_level_required(3)
 def geradorEdit(id=None):
     if request.method == "POST":
         quartel_id = session["quartel"]["quartel_id"]
@@ -71,10 +74,19 @@ def geradorEdit(id=None):
     return render_template("gerador/tasks/edit.html", gerador=gerador)
 
 
-@app.route("/gerador/delete", methods=["POST"])
+@app.route("/gerador/delete/<int:id>", methods=["POST"])
 @login_required
-def geradorDelete():
-    db.execute("DELETE FROM despesas WHERE id=?", id)
+@access_level_required(3)
+def geradorDelete(id = None):
+    ids = [i["id"] for i in db.execute("SELECT id FROM geradores WHERE quartel_id = ?", session["quartel"]["quartel_id"])]
+    totals = [i["id"] for i in db.execute("SELECT id FROM geradores")]
+
+    if id in totals and id not in ids:
+        apology("forbiden")
+    elif id not in totals:
+        apology("notFound")
+
+    db.execute("DELETE FROM geradores WHERE id=?", id)
 
     return redirect("/despesa/list")
 

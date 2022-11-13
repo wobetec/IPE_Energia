@@ -1,11 +1,11 @@
 from app import app, db
 from flask import redirect, render_template, request, session
-from app.helpers import apology, login_required, recursive_get_subordinados
+from app.helpers import apology, login_required, recursive_get_subordinados, access_level_required
 
 
-@app.route("/quartel", methods=["GET"])
 @app.route("/quartel/list", methods=["GET"])
 @login_required
+@access_level_required(2)
 def quartelList():
     subordinados = {
         session["quartel"]["sigla"]: recursive_get_subordinados(
@@ -18,6 +18,7 @@ def quartelList():
 
 @app.route("/quartel/add", methods=["GET", "POST"])
 @login_required
+@access_level_required(2)
 def quartelAdd():
     if request.method == "POST":
         name = request.form.get("name")
@@ -55,8 +56,10 @@ def quartelAdd():
     return render_template("quartel/tasks/add.html")
 
 
+@app.route("/quartel", methods=["GET"])
 @app.route("/quartel/edit", methods=["GET", "POST"])
 @login_required
+@access_level_required(3)
 def quartelEdit():
     if request.method == "POST":
         efetivo = request.form.get("efetivo")
@@ -83,6 +86,7 @@ def quartelEdit():
 
 
 @app.route("/quartel/select/<string:sigla>", methods=["GET"])
+@access_level_required(2)
 @login_required
 def quartelSelect(sigla):
     data = db.execute(

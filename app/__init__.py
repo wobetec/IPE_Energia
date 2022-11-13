@@ -10,6 +10,7 @@ app = Flask(__name__, instance_relative_config=True)
 
 # configure app usin /instance
 app.config.from_pyfile('config.py')
+app.config['UPLOAD_FOLDER'] = "/upload"
 
 
 # custom jinja

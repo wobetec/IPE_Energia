@@ -10,8 +10,11 @@
                     <tr>
                         <th>Name</th>
                         <th>Tipo</th>
-                        <th></th>
-                        <th></th>
+                        
+                        {% if session["main"]["access_level"] < 4 %}
+                            <th></th>
+                            <th></th>
+                        {% endif %}
                     </tr>
                 </thead>
                 <tbody>
@@ -19,16 +22,18 @@
                     <tr>
                         <td>{{ gerador["name"] }}</td>
                         <td>{{ gerador["tipo"] }}</td>
-                        <td>
-                            <button>
-                                <a href={{ "/gerador/edit/"+ gerador["id"]|string }}>EDIT</a>
-                            </button>
-                        </td>
-                        <td>
-                            <button>
-                                <a href={{ "/gerador/delete/"+ gerador["id"]|string }}>DEL</a>
-                            </button>
-                        </td>
+                        {% if session["main"]["access_level"] < 4 %}
+                            <td>
+                                <button>
+                                    <a href={{ "/gerador/edit/"+ gerador["id"]|string }}>EDIT</a>
+                                </button>
+                            </td>
+                            <td>
+                                <button>
+                                    <a href={{ "/gerador/delete/"+ gerador["id"]|string }}>DEL</a>
+                                </button>
+                            </td>
+                        {% endif %}
 
                     </tr>
                     {% endfor %}

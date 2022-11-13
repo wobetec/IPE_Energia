@@ -40,11 +40,15 @@
             <div class="collapse navbar-collapse" id="navbar">
                 {% if session["user_id"] %}
                     <ul class="navbar-nav me-auto mt-2">
+
                         <li class="nav-item"><a class="nav-link" id="despesa" href="/despesa">Despesas</a></li>
-                        <li class="nav-item"><a class="nav-link" id="quartel" href="/quartel">Quarteis</a></li>
-                        <li class="nav-item"><a class="nav-link" id="gerador" href="/gerador">Geradores</a></li>
                         <li class="nav-item"><a class="nav-link" id="geracao" href="/geracao">Geração</a></li>
-                        <li class="nav-item"><a class="nav-link" id="users" href="/users">Usuários</a></li>
+                        <li class="nav-item"><a class="nav-link" id="gerador" href="/gerador">Geradores</a></li>
+
+                        {% if session["main"]["access_level"] <= 3 %}
+                            <li class="nav-item"><a class="nav-link" id="users" href="/users">Usuários</a></li>
+                            <li class="nav-item"><a class="nav-link" id="quartel" href="/quartel">Quarteis</a></li>
+                        {% endif %}
                     </ul>
 
                     <div id="my_child_option_mother_page" style="display: none;">{% block mother %}{% endblock %}</div>
@@ -54,9 +58,11 @@
                         document.getElementById(selected).classList.add("active")
                     </script>
 
-                    <button type="button" class="btn btn-secondary">
-                        {{ session["username"] }} <span class="badge bg-dark">{{ session["main"]["access_level"] }}</span>
-                    </button>
+                    <a href="/users/profile">
+                        <button type="button" class="btn btn-secondary">
+                            {{ session["username"] }} <span class="badge bg-dark">{{ session["main"]["access_level"] }}</span>
+                        </button>
+                    </a>
                     <ul class="navbar-nav ms-auto mt-2">
                         <div class="dropdown">
                             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
@@ -64,7 +70,9 @@
                                 {{session["quartel"]["sigla"]}}
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                <li><a class="dropdown-item" href={{"/quartel/select/" + session["main"]["sigla"] }}>Voltar para {{ session["main"]["sigla"] }}</a></li>
+                                {% if session["main"]["access_level"] < 3 %}
+                                    <li><a class="dropdown-item" href={{"/quartel/select/" + session["main"]["sigla"] }}>Voltar para {{ session["main"]["sigla"] }}</a></li>
+                                {% endif %}
                             </ul>
                         </div>
 
