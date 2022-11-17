@@ -1,0 +1,208 @@
+{% extends "index.html" %}
+
+{% set g = {
+    "page":"geracao",
+    "abas":{
+        "add":{
+            "title":"Adicionar",
+            "id":"add",
+            "action":"/geracao/add"
+        },
+        "list":{
+            "title":"Listar",
+            "id":"list",
+            "action":"/geracao/list"
+        },
+        "edit":{
+            "title":"Editar",
+            "id":"edit",
+            "action":"#"
+        },
+    },
+    "selected_aba":aba
+
+} %}
+
+{% if aba != "edit" %}
+    {% set temp = g.abas.pop("edit") %}
+{% endif %}
+
+{% block page %}
+
+    {% if aba == "add" %}
+        {{ add() }}
+    {% elif aba == "edit" %}
+        {{ edit() }}
+    {% elif aba == "list" %}
+        {{ list() }}
+    {% endif %}
+
+
+{% endblock %}
+
+
+{% macro add() %}
+    <form action="/geracao/add" method="post">
+        <div class="field-container">
+            <div class="field-name">
+                <label for="fieldName">Gerador:</label>
+            </div>
+            <div class="field-input">
+                <select name="gerador_id" class="only" >
+                    <option disable selected>Gerador</option>
+                    {% for gerador in geradores %}
+                        <option value="{{gerador['id']}}" >{{ gerador["name"] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="field-container">
+            <div class="field-name">
+                <label for="fieldName">Efetiva:</label>
+            </div>
+            <div class="field-input">
+                <input type="number" class="before" name="efetiva" placeholder="Efetiva" >
+                <span class="after">kWh</span>
+            </div>
+        </div>
+        <div class="field-container">
+            <div class="field-name">
+                <label for="fieldName">Reativa:</label>
+            </div>
+            <div class="field-input">
+                <input type="number" class="before" name="reativa" placeholder="Reativa" >
+                <span class="after">kWh</span>
+            </div>
+        </div>
+        <div class="field-container">
+            <div class="field-name">
+                <label for="fieldName">Consumo:</label>
+            </div>
+            <div class="field-input">
+                <span class="before">R$</span>
+                <input type="number" class="after" name="consumo" placeholder="Consumo" >
+            </div>
+        </div>
+        <div class="field-container">
+            <div class="field-name">
+                <label for="fieldName">Consumo:</label>
+            </div>
+            <div class="field-input">
+                <input class="only" id="data_uso" name="data_uso" type="date">
+            </div>
+        </div>
+        <button type="submit">Adicionar</button>
+    </form>
+
+    <script type="text/javascript">
+        var date = new Date();
+
+        var day = date.getDate();
+        var month = date.getMonth() + 1;
+        var year = date.getFullYear();
+
+        if (month < 10) month = "0" + month;
+        if (day < 10) day = "0" + day;
+
+        var today = year + "-" + month + "-" + day;
+        document.getElementById('data_uso').value = today;
+    </script>
+{% endmacro %}
+
+
+{% macro edit() %}
+    <form action={{"/geracao/edit/" + geracao["id"]|string }} method="post">
+        <div class="field-container">
+            <div class="field-name">
+                <label for="fieldName">Gerador:</label>
+            </div>
+            <div class="field-input">
+                <select name="gerador_id" class="only" value="{{ geracao['gerador_id'] }}" >
+                    <option disable selected>Gerador</option>
+                    {% for gerador in geradores %}
+                        {% if gerador['id'] == geracao['gerador_id'] %}
+                            <option selected value="{{gerador['id']}}" >{{ gerador["name"] }}</option>
+                        {% else %}
+                            <option value="{{gerador['id']}}" >{{ gerador["name"] }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="field-container">
+            <div class="field-name">
+                <label for="fieldName">Efetiva:</label>
+            </div>
+            <div class="field-input">
+                <input type="number" class="before" name="efetiva" placeholder="Efetiva" value="{{ geracao['efetiva'] }}" >
+                <span class="after">kWh</span>
+            </div>
+        </div>
+        <div class="field-container">
+            <div class="field-name">
+                <label for="fieldName">Reativa:</label>
+            </div>
+            <div class="field-input">
+                <input type="number" class="before" name="reativa" placeholder="Reativa" value="{{ geracao['reativa'] }}" >
+                <span class="after">kWh</span>
+            </div>
+        </div>
+        <div class="field-container">
+            <div class="field-name">
+                <label for="fieldName">Consumo:</label>
+            </div>
+            <div class="field-input">
+                    <span class="before">R$</span>
+                    <input type="number" class="after" name="consumo" placeholder="Consumo" value="{{ geracao['consumo'] }}" >
+            </div>
+        </div>
+        <div class="field-container">
+            <div class="field-name">
+                <label for="fieldName">Consumo:</label>
+            </div>
+            <div class="field-input">
+                    <input class="only" id="data_uso" name="data_uso" type="date" value="{{ geracao['data_uso'] }}" >
+            </div>
+        </div>
+        <button type="submit">Atualizar</button>
+    </form>
+{% endmacro %}
+
+{% macro list() %}
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Gerador</th>
+                    <th>Data do uso</th>
+                    <th>Efetiva</th>
+                    <th>Reativa</th>
+                    <th>Consumo</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for geracao in geracoes %}<tr>
+                    <td>{{ geracao["name"] }}</td>
+                    <td>{{ geracao["data_uso"] | date }}</td>
+                    <td>{{ geracao["efetiva"] | kwh }}</td>
+                    <td>{{ geracao["reativa"] | kwh }}</td>
+                    <td>{{ geracao["consumo"] | brl }}</td>
+                    <td>
+                        <a href={{ "/geracao/edit/"+ geracao["id"]|string }}>
+                            <button>EDIT</button>
+                        </a>
+                    </td>
+                    <td>
+                        <a href={{ "/geracao/delete/"+ geracao["id"]|string }}>
+                            <button>DELE</button>
+                        </a>
+                    </td>
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endmacro %}

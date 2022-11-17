@@ -12,7 +12,7 @@ def geradorList():
         "SELECT * FROM geradores WHERE quartel_id=?",
         session["quartel"]["quartel_id"],
     )
-    return render_template("gerador/tasks/list.html", geradores=geradores)
+    return render_template("pages/geradores.html", aba="list", geradores=geradores)
 
 
 @app.route("/gerador/add", methods=["GET", "POST"])
@@ -40,7 +40,7 @@ def geradorAdd():
 
         return redirect("/gerador/list")
 
-    return render_template("gerador/tasks/add.html")
+    return render_template("pages/geradores.html", aba="add")
 
 
 @app.route("/gerador/edit/<int:id>", methods=["GET", "POST"])
@@ -71,7 +71,7 @@ def geradorEdit(id=None):
 
     gerador = db.execute("SELECT * FROM geradores WHERE id=?", id)[0]
 
-    return render_template("gerador/tasks/edit.html", gerador=gerador)
+    return render_template("pages/geradores.html", aba="edit", gerador=gerador)
 
 
 @app.route("/gerador/delete/<int:id>", methods=["POST"])

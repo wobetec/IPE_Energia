@@ -1,5 +1,5 @@
 from app import app, db
-from flask import redirect, render_template, request, session, url_for
+from flask import redirect, render_template, request, session, url_for, g
 import os
 from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.utils import secure_filename
@@ -17,5 +17,5 @@ from app.var import ACCESS_LEVEL
 @access_level_required(None)
 def index():
 
-    return render_template("index.html")
+    return render_template("pages/dashboard.html")
 

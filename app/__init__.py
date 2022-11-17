@@ -1,6 +1,7 @@
 from flask import Flask
 from app.sql import SQL
 from flask_session import Session
+from flask_assets import Environment, Bundle
 from app.helpers import filters
 
 
@@ -33,6 +34,18 @@ Session(app)
 
 # set database for the application
 db = SQL("sqlite:///database.db")
+
+
+# set scss
+assets = Environment(app)
+assets.url = app.static_url_path
+sass = Bundle(
+    'styles/global.sass', 
+    'styles/variables.sass', 
+    'styles/components.sass', 
+    'styles/pages.sass', 
+    filters='sass', output='all.css')
+assets.register('sass_all', sass)
 
 
 # import views

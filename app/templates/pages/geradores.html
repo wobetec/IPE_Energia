@@ -1,0 +1,126 @@
+{% extends "index.html" %}
+
+{% set g = {
+    "page":"geradores",
+    "abas":{
+        "add":{
+            "title":"Adicionar",
+            "id":"add",
+            "action":"/gerador/add"
+        },
+        "list":{
+            "title":"Listar",
+            "id":"list",
+            "action":"/gerador/list"
+        },
+        "edit":{
+            "title":"Editar",
+            "id":"edit",
+            "action":""
+        },
+    },
+    "selected_aba":aba
+
+} %}
+
+{% if aba != "edit" %}
+    {% set temp = g.abas.pop("edit") %}
+{% endif %}
+
+{% block page %}
+
+    {% if aba == "add" %}
+        {{ add() }}
+    {% elif aba == "edit" %}
+        {{ edit() }}
+    {% elif aba == "list" %}
+        {{ list() }}
+    {% endif %}
+
+
+{% endblock %}
+
+
+{% macro add() %}
+    <form action="/gerador/add" method="post">
+        <div class="field-container">
+            <div class="field-name">
+                <label for="fieldName">Name:</label>
+            </div>
+            <div class="field-input">
+                <input autocomplete="off" autofocus type="text" class="only" name="name" placeholder="Name" >
+            </div>
+        </div>
+        <div class="field-container">
+            <div class="field-name">
+                <label for="fieldName">Tipo:</label>
+            </div>
+            <div class="field-input">
+                <input autocomplete="off" autofocus type="text" class="only" name="tipo" placeholder="Tipo" >
+            </div>
+        </div>
+        <button class="btn btn-primary" type="submit">Adicionar</button>
+    </form>
+{% endmacro %}
+
+
+{% macro edit() %}
+    <form action={{"/gerador/edit/" + gerador["id"]|string }} method="post">
+        <div class="field-container">
+            <div class="field-name">
+                <label for="fieldName">Name:</label>
+            </div>
+            <div class="field-input">
+                <input autocomplete="off" autofocus type="text" class="only" name="name" placeholder="Name" value="{{ gerador['name'] }}">
+            </div>
+        </div>
+        <div class="field-container">
+            <div class="field-name">
+                <label for="fieldName">Tipo:</label>
+            </div>
+            <div class="field-input">
+                <input autocomplete="off" autofocus type="text" class="only" name="tipo" placeholder="Tipo" value="{{ gerador['tipo'] }}" >
+            </div>
+        </div>
+        <button class="btn btn-primary" type="submit">Atualizar</button>
+    </form>
+{% endmacro %}
+
+{% macro list() %}
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Tipo</th>
+                    
+                    {% if session["main"]["access_level"] < 4 %}
+                        <th></th>
+                        <th></th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for gerador in geradores %}
+                <tr>
+                    <td>{{ gerador["name"] }}</td>
+                    <td>{{ gerador["tipo"] }}</td>
+                    {% if session["main"]["access_level"] < 4 %}
+                    <td>
+                        <a href={{ "/gerador/edit/"+ gerador["id"]|string }}>
+                            <button>EDIT</button>
+                        </a>
+                    </td>
+                    <td>
+                        <a href={{ "/gerador/delete/"+ gerador["id"]|string }}>
+                            <button>DELE</button>
+                        </a>
+                    </td>
+                    {% endif %}
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endmacro %}

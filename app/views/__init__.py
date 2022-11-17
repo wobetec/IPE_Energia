@@ -1,5 +1,5 @@
 from app import app
-from app.views import index, users, quarteis, despesas, geradores, geracao
+from app.views import index, users, quarteis, despesas, geradores, geracao, profile, quartel_profile
 
 
 @app.after_request

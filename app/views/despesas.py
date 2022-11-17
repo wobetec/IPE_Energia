@@ -23,13 +23,14 @@ def despesaAdd():
 
         if not (
             valor
-            or demanda
-            or efetiva
-            or reativa
-            or data_fatura
-            or multa
+            and demanda
+            and efetiva
+            and reativa
+            and data_fatura
+            and multa
         ):
             return apology("missing")
+        
 
         db.execute(
             "INSERT INTO despesas (quartel_id, valor, efetivo, area, demanda, efetiva, reativa, data_fatura, contratada, multa) VALUES(?,?,?,?,?,?,?,?,?,?)",
@@ -47,7 +48,7 @@ def despesaAdd():
 
         return redirect("/despesa/list")
 
-    return render_template("despesa/tasks/add.html")
+    return render_template("pages/despesas.html", aba="add")
 
 
 @app.route("/despesa/edit/<int:id>", methods=["GET", "POST"])
@@ -97,7 +98,7 @@ def despesaEdit(id=None):
 
     despesa = db.execute("SELECT * FROM despesas WHERE id=?", id)[0]
 
-    return render_template("despesa/tasks/edit.html", despesa=despesa)
+    return render_template("pages/despesas.html", aba="edit", despesa=despesa)
 
 
 @app.route("/despesa/list", methods=["GET"])
@@ -108,13 +109,13 @@ def despesaList():
         "SELECT * FROM despesas WHERE quartel_id=?",
         session["quartel"]["quartel_id"],
     )
-    return render_template("despesa/tasks/list.html", despesas=despesas)
+    return render_template("pages/despesas.html", aba="list", despesas=despesas)
 
 
-@app.route("/despesa/delete", methods=["POST"])
+@app.route("/despesa/delete/<int:id>", methods=["POST"])
 @login_required
 @access_level_required(4)
-def despesaDelete():
+def despesaDelete(id):
     db.execute("DELETE FROM despesas WHERE id=?", id)
 
     return redirect("/despesa/list")

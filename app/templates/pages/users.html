@@ -1,0 +1,146 @@
+{% extends "index.html" %}
+
+{% set g = {
+    "page":"users",
+    "abas":{
+        "add":{
+            "title":"Adicionar",
+            "id":"add",
+            "action":"/users/add"
+        },
+        "list":{
+            "title":"Subordinados",
+            "id":"list",
+            "action":"/users/list"
+        },
+        "edit":{
+            "title":"Editar",
+            "id":"edit",
+            "action":""
+        },
+    },
+    "selected_aba":aba
+
+} %}
+
+{% if aba != "edit" %}
+    {% set temp = g.abas.pop("edit") %}
+{% endif %}
+
+{% block page %}
+
+    {% if aba == "add" %}
+        {{ add() }}
+    {% elif aba == "edit" %}
+        {{ edit() }}
+    {% elif aba == "list" %}
+        {{ list() }}
+    {% endif %}
+
+
+{% endblock %}
+
+
+{% macro add() %}
+    <form action="/users/add" method="post">
+        <div class="field-container">
+            <div class="field-name">
+                <label for="fieldName">Username:</label>
+            </div>
+            <div class="field-input">
+                <input autocomplete="off" autofocus class="only" name="username" placeholder="Username" type="text">
+            </div>
+        </div>
+        <div class="field-container">
+            <div class="field-name">
+                <label for="fieldName">Password:</label>
+            </div>
+            <div class="field-input">
+                <input autocomplete="off" class="only" name="password" placeholder="Password" type="password">
+            </div>
+        </div>
+        <div class="field-container">
+            <div class="field-name">
+                <label for="fieldName">Confirmation:</label>
+            </div>
+            <div class="field-input">
+                <input autocomplete="off" class="only" name="confirmation" placeholder="Confirmation" type="password">
+            </div>
+        </div>
+        <div class="field-container">
+            <div class="field-name">
+                <label for="fieldName">Access level:</label>
+            </div>
+            <div class="field-input">
+                <select name="access_level" class="only" >
+                    <option disable selected>Access</option>
+                    {% for option in ACCESS_LEVEL %}
+                        {% if option != 1 %}
+                            <option value="{{option}}" >{{ACCESS_LEVEL[option]}}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <button type="submit">Register</button>
+    </form>
+{% endmacro %}
+
+
+{% macro edit() %}
+    <h1>Username: {{ user["username"] }}</h1>
+    <form action={{"/users/edit/" + user["id"]|string }} method="post">
+        <div class="field-container">
+            <div class="field-name">
+                <label for="fieldName">Access level:</label>
+            </div>
+            <div class="field-input">
+                <select name="access_level" id="access_level" class="only">
+                    <!-- <option disable selected id="selection_begin">Access</option> -->
+                    {% for option in ACCESS_LEVEL %}
+                        {% if option != 1 and option != user['access_level'] %}
+                            <option value="{{option}}" id="{{option}}" >{{ACCESS_LEVEL[option]}}</option>
+                        {% elif option == user['access_level'] %}
+                            <option selected value="{{option}}" id="{{option}}" >{{ACCESS_LEVEL[option]}}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <button type="submit">Save</button>
+    </form>
+{% endmacro %}
+
+{% macro list() %}
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Nivel de Acesso</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user["username"] }}</td>
+                    <td>{{ ACCESS_LEVEL[user["access_level"]] }}</td>
+                    <td>
+                        <a href={{ "/users/edit/"+ user["id"]|string }}>
+                            <button>EDIT</button>
+                        </a>
+                    </td>
+                    <td>
+                        <a href={{ "/users/delete/"+ user["id"]|string }}>
+                            <button>DELE</button>
+                        </a>
+                    </td>
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endmacro %}

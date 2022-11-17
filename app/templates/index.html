@@ -1,11 +1,13 @@
 {% extends "layout.html" %}
-
-{% block title %}
-Home
-{% endblock %}
+{% from "components.html" import sidebar, header %}
 
 {% block main %}
-    <div class="container">
-        <h1>Hello</h1>
-    </div>
+    {{ sidebar(g.page, access=ACCESS_LEVEL[session.main.access_level]) }}
+    {{ header(g.abas, select=g.selected_aba, now=g.page, extra=g.extra) }}
+
+    <main class="page">
+        {% block page %}{% endblock %}
+    </main>
+    
 {% endblock %}
+

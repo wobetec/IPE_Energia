@@ -1,0 +1,219 @@
+{% extends "index.html" %}
+
+{% set g = {
+    "page":"despesas",
+    "abas":{
+        "add":{
+            "title":"Adicionar",
+            "id":"add",
+            "action":"/despesa/add"
+        },
+        "list":{
+            "title":"Listar",
+            "id":"list",
+            "action":"/despesa/list"
+        },
+        "edit":{
+            "title":"Editar",
+            "id":"edit",
+            "action":""
+        },
+    },
+    "selected_aba":aba
+
+} %}
+
+{% if aba != "edit" %}
+    {% set temp = g.abas.pop("edit") %}
+{% endif %}
+
+{% block page %}
+
+    {% if aba == "add" %}
+        {{ add() }}
+    {% elif aba == "edit" %}
+        {{ edit() }}
+    {% elif aba == "list" %}
+        {{ list() }}
+    {% endif %}
+
+
+{% endblock %}
+
+
+{% macro add() %}
+    <form action="/despesa/add" method="post">
+        <div class="field-container">
+            <div class="field-name">
+                <label for="fieldName">Valor:</label>
+            </div>
+            <div class="field-input">
+                <span class="before">R$</span>
+                <input type="number" class="after" name="valor" placeholder="Valor" >
+            </div>
+        </div>
+        <div class="field-container">
+            <div class="field-name">
+                <label for="fieldName">Demanda:</label>
+            </div>
+            <div class="field-input">
+                <input type="number" class="before" name="demanda" placeholder="Demanda" >
+                <span class="after">kWh</span>
+            </div>
+        </div>
+        <div class="field-container">
+            <div class="field-name">
+                <label for="fieldName">Efetiva:</label>
+            </div>
+            <div class="field-input">
+                <input type="number" class="before" name="efetiva" placeholder="Efetiva" >
+                <span class="after">kWh</span>
+            </div>
+        </div>
+        <div class="field-container">
+            <div class="field-name">
+                <label for="fieldName">Reativa:</label>
+            </div>
+            <div class="field-input">
+                <input type="number" class="before" name="reativa" placeholder="Reativa" >
+                <span class="after">kWh</span>
+            </div>
+        </div>
+        <div class="field-container">
+            <div class="field-name">
+                <label for="fieldName">Multa:</label>
+            </div>
+            <div class="field-input">
+                <span class="before">R$</span>
+                <input type="number" class="after" name="multa" placeholder="Multa" value="0.00">
+            </div>
+        </div>
+        <div class="field-container">
+            <div class="field-name">
+                <label for="fieldName">Data fatura:</label>
+            </div>
+            <div class="field-input">
+                <input class="only" id="data_fatura" name="data_fatura" type="date">
+            </div>
+        </div>
+        <button class="btn btn-primary" type="submit">Adicionar</button>
+    </form>
+
+    <script type="text/javascript">
+        var date = new Date();
+
+        var day = date.getDate();
+        var month = date.getMonth() + 1;
+        var year = date.getFullYear();
+
+        if (month < 10) month = "0" + month;
+        if (day < 10) day = "0" + day;
+
+        var today = year + "-" + month + "-" + day;
+        document.getElementById('data_fatura').value = today;
+    </script>
+{% endmacro %}
+
+
+{% macro edit() %}
+    <form action={{"/despesa/edit/"+despesa["id"]|string}} method="post">
+        <div class="field-container">
+            <div class="field-name">
+                <label for="fieldName">Valor:</label>
+            </div>
+            <div class="field-input">
+                <span class="before">R$</span>
+                <input type="number" class="after" name="valor" placeholder="Valor" value="{{despesa['valor']}}" >
+            </div>
+        </div>
+        <div class="field-container">
+            <div class="field-name">
+                <label for="fieldName">Demanda:</label>
+            </div>
+            <div class="field-input">
+                <input type="number" class="before" name="demanda" placeholder="Demanda" value="{{despesa['demanda']}}" >
+                <span class="after">kWh</span>
+            </div>
+        </div>
+        <div class="field-container">
+            <div class="field-name">
+                <label for="fieldName">Efetiva:</label>
+            </div>
+            <div class="field-input">
+                <input type="number" class="before" name="efetiva" placeholder="Efetiva" value="{{despesa['efetiva']}}" >
+                <span class="after">kWh</span>
+            </div>
+        </div>
+        <div class="field-container">
+            <div class="field-name">
+                <label for="fieldName">Reativa:</label>
+            </div>
+            <div class="field-input">
+                <input type="number" class="before" name="reativa" placeholder="Reativa" value="{{despesa['reativa']}}" >
+                <span class="after">kWh</span>
+            </div>
+        </div>
+        <div class="field-container">
+            <div class="field-name">
+                <label for="fieldName">Multa:</label>
+            </div>
+            <div class="field-input">
+                <span class="before">R$</span>
+                <input type="number" class="after" name="multa" placeholder="Multa" value="{{despesa['multa']}}">
+            </div>
+        </div>
+        <div class="field-container">
+            <div class="field-name">
+                <label for="fieldName">Data fatura:</label>
+            </div>
+        <div class="field-input">
+                <input class="only" id="data_fatura" name="data_fatura" type="date" value="{{despesa['data_fatura']}}">
+            </div>
+        </div>
+        <button type="submit">Atualizar</button>
+    </form>
+{% endmacro %}
+
+{% macro list() %}
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Valor</th>
+                    <th>Efetivo</th>
+                    <th>Area</th>
+                    <th>Efetiva</th>
+                    <th>Reativa</th>
+                    <th>Multa</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for despesa in despesas %}
+                <tr>
+                    <td>{{ despesa["data_fatura"] | date }}</td>
+                    <td>{{ despesa["valor"] | brl }}</td>
+                    <td>{{ despesa["efetivo"] }}</td>
+                    <td>{{ despesa["area"] | m2 }}</td>
+                    <td>{{ despesa["efetiva"] | kwh }}</td>
+                    <td>{{ despesa["reativa"] | kwh }}</td>
+                    <td>{{ despesa["multa"] | brl }}</td>
+                    <td>
+                        <a href={{ "/despesa/edit/"+ despesa["id"]|string }}>
+                            <button>EDIT</button>
+                        </a>
+                    </td>
+                    <td>
+                        <a href={{ "/despesa/delete/"+ despesa["id"]|string }}>
+                            <button>DELE</button>
+                        </a>
+                    </td>
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endmacro %}

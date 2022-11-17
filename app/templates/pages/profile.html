@@ -1,0 +1,53 @@
+{% extends "index.html" %}
+
+{% set g = {
+    "page":"Perfil",
+    "extra":True,
+    "abas":{
+        "change_password":{
+            "title":"Mudar senha",
+            "id":"change_password",
+            "action":"/profile/change_password"
+        },
+    },
+    "selected_aba":aba
+} %}
+
+{% block page %}
+
+    {% if aba == "change_password" %}
+        {{ change_password() }}
+    {% endif %}
+
+
+{% endblock %}
+
+{% macro change_password() %}
+    <form action="/profile/change_password" method="post">
+        <div class="field-container">
+            <div class="field-name">
+                <label for="fieldName">Old password:</label>
+            </div>
+            <div class="field-input">
+                <input autocomplete="off" class="only" name="old" placeholder="Old password" type="password">
+            </div>
+        </div>
+        <div class="field-container">
+            <div class="field-name">
+                <label for="fieldName">Password:</label>
+            </div>
+            <div class="field-input">
+                <input autocomplete="off" class="only" name="password" placeholder="Password" type="password">
+            </div>
+        </div>
+        <div class="field-container">
+            <div class="field-name">
+                <label for="fieldName">Confirmation:</label>
+            </div>
+            <div class="field-input">
+                <input autocomplete="off" class="only" name="confirmation" placeholder="Confirmation" type="password">
+            </div>
+        </div>
+        <button type="submit">Update</button>
+    </form>
+{% endmacro %}

@@ -3,6 +3,7 @@ from flask import redirect, render_template, request, session
 from app.helpers import apology, login_required, recursive_get_subordinados, access_level_required
 
 
+@app.route("/quartel", methods=["GET"])
 @app.route("/quartel/list", methods=["GET"])
 @login_required
 @access_level_required(2)
@@ -13,7 +14,7 @@ def quartelList():
         )
     }
 
-    return render_template("quartel/tasks/list.html", subordinados=subordinados)
+    return render_template("pages/quarteis.html", aba="list", subordinados=subordinados)
 
 
 @app.route("/quartel/add", methods=["GET", "POST"])
@@ -53,10 +54,9 @@ def quartelAdd():
 
         return redirect("/quartel/list")
 
-    return render_template("quartel/tasks/add.html")
+    return render_template("pages/quarteis.html", aba="add")
 
 
-@app.route("/quartel", methods=["GET"])
 @app.route("/quartel/edit", methods=["GET", "POST"])
 @login_required
 @access_level_required(3)
@@ -82,7 +82,7 @@ def quartelEdit():
         "SELECT * FROM quarteis WHERE id=?", session["quartel"]["quartel_id"]
     )[0]
 
-    return render_template("quartel/tasks/edit.html", quartel=quartel)
+    return render_template("pages/quarteis.html", aba="edit", quartel=quartel)
 
 
 @app.route("/quartel/select/<string:sigla>", methods=["GET"])
@@ -90,7 +90,7 @@ def quartelEdit():
 @login_required
 def quartelSelect(sigla):
     data = db.execute(
-        "SELECT id, sigla, area, efetivo, demanda_contratada FROM quarteis WHERE sigla=?",
+        "SELECT id, sigla, area, efetivo, demanda_contratada, name FROM quarteis WHERE sigla=?",
         sigla,
     )[0]
 
@@ -98,6 +98,7 @@ def quartelSelect(sigla):
         "quartel_id": data["id"],
         "sigla": data["sigla"],
         "area": data["area"],
+        "name": data["name"],
         "efetivo": data["efetivo"],
         "demanda_contratada": data["demanda_contratada"],
     }

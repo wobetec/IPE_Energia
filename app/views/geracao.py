@@ -13,7 +13,7 @@ def geracaoList():
         session["quartel"]["quartel_id"],
     )
 
-    return render_template("geracao/tasks/list.html", geracoes=geracoes)
+    return render_template("pages/geracao.html", geracoes=geracoes, aba="list")
 
 
 @app.route("/geracao/add", methods=["GET", "POST"])
@@ -48,7 +48,7 @@ def geracaoAdd():
         return redirect("/geracao/list")
 
     geradores = db.execute("SELECT id, name FROM geradores WHERE quartel_id = ?", session["quartel"]["quartel_id"])
-    return render_template("geracao/tasks/add.html", geradores=geradores)
+    return render_template("pages/geracao.html", geradores=geradores, aba="add")
 
 
 @app.route("/geracao/edit/<int:id>", methods=["GET", "POST"])
@@ -56,7 +56,7 @@ def geracaoAdd():
 @access_level_required(4)
 def geracaoEdit(id=None):
     if request.method == "POST":
-        gerador_id = request.form.get("gerador_id")
+        gerador_id = id
         efetiva = request.form.get("efetiva")
         reativa = request.form.get("reativa")
         consumo = request.form.get("consumo")
@@ -72,7 +72,7 @@ def geracaoEdit(id=None):
             return apology("missing")
 
         db.execute(
-            "UPDATE despesas SET gerador_id=?, efetiva=?, reativa=?, consumo=? data_uso WHERE id=?",
+            "UPDATE geracao SET gerador_id=?, efetiva=?, reativa=?, consumo=?, data_uso=? WHERE id=?",
             gerador_id,
             efetiva,
             reativa,
@@ -86,7 +86,7 @@ def geracaoEdit(id=None):
     geracao = db.execute("SELECT * FROM geracao WHERE id=?", id)[0]
     geradores = db.execute("SELECT id, name FROM geradores WHERE quartel_id = ?", session["quartel"]["quartel_id"])
 
-    return render_template("geracao/tasks/edit.html", geracao=geracao, geradores=geradores)
+    return render_template("pages/geracao.html", geracao=geracao, geradores=geradores, aba="edit")
 
 
 @app.route("/geracao/delete/<int:id>", methods=["POST"])

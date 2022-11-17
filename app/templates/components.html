@@ -1,0 +1,143 @@
+
+{% macro sidebarPages(onlyOne="", extra=False) %}
+    <li>
+        <a href="/" id="sidebar-dashboard">
+            <span class="icon"><i class="fas fa-solid fa-table"></i></span>
+            <span class="item">Dashboard</span>
+        </a>
+    </li>
+    <li>
+        <a href="/despesa" id="sidebar-despesas">
+            <span class="icon"><i class="fas fa-dollar-sign"></i></span>
+            <span class="item">Despesas</span>
+        </a>
+    </li>
+    <li>
+        <a href="/geracao" id="sidebar-geracao">
+            <span class="icon"><i class="fas fa-solid fa-table"></i></i></span>
+            <span class="item">Geração</span>
+        </a>
+    </li>
+    <li>
+        <a href="/gerador" id="sidebar-geradores">
+            <span class="icon"><i class="fas fa-solid fa-table"></i></i></span>
+            <span class="item">Geradores</span>
+        </a>
+    </li>
+    <li>
+        <a href="/quartel" id="sidebar-quarteis">
+            <span class="icon"><i class="fas fa-home"></i></span>
+            <span class="item">OMs subordinadas</span>
+        </a>
+    </li>
+    <li>
+        <a href="/users" id="sidebar-users">
+            <span class="icon"><i class="fas fa-home"></i></span>
+            <span class="item">Usuários</span>
+        </a>
+    </li>
+
+    {% set only = onlyOne.split()[0] %}
+
+    {% if extra %}
+        <li>
+            <a href="" id={{"sidebar-" + only}}>
+                <span class="item">{{ onlyOne }}</span>
+            </a>
+        </li>
+    {% endif %}
+    
+    {% if onlyOne != "" %}
+    <script type="text/javascript">
+        var only = "{{ only }}"
+        var all = document.querySelectorAll(".page-name li a")
+        for(let index=0; index<all.length; index++) {
+            all[index].style.display = "none"
+        }
+        document.querySelector(`.page-name a#sidebar-${only}`).style.display = "block"
+        </script>
+    {% endif %}
+{% endmacro %}
+
+
+{% macro sidebar(selected, access=None) %}
+    <div class="sidebar">
+        <div class="quartel">
+            <img src="{{url_for('static', filename='images/placeholder_brasao.png')}}" alt="">
+            <h2>{{ session.quartel.name }}</h2>
+            <p>{{ access }}</p>
+        </div>
+        <ul class="nav">
+            {{ sidebarPages() }}
+        </ul>
+        <div class="hide">
+            <a href="#">
+                <i class="fas fa-angle-left"></i>
+            </a>
+        </div>
+
+        <script type="text/javascript">
+            var selectedPage = document.getElementById(`sidebar-${"{{selected}}"}`)
+            selectedPage.classList.add("active")
+            var hide = document.querySelector(".hide");
+            hide.addEventListener("click", function(){
+                document.querySelector(".sidebar").classList.toggle("close");
+
+                document.querySelector(".hide i").classList.toggle("fa-angle-right")
+                document.querySelector(".hide i").classList.toggle("fa-angle-left")
+
+                document.querySelector("main.page").classList.toggle("full")
+                document.querySelector(".header").classList.toggle("full")
+            })
+        </script>
+    </div><!--sidebar-->
+{% endmacro %}
+
+
+{% macro header(options, select=None, now=None, extra=False) %}
+    <div class="header">
+        <div class="bar">
+            <div class="page-name">
+                {{ sidebarPages(now, extra) }}
+            </div>
+            <div class="logo">
+                <img src="{{url_for('static', filename='images/luxium.png')}}" alt="logo">
+            </div>
+            <div class="user dropdown">
+                <button class="dropbtn">
+                    <span class="item">{{ session.username }}</span>
+                    <span class="icon"><i class="fas fa-angle-down"></i></span>
+                </button>
+                <div class="dropdown-content">
+                    {% if session.quartel.quartel_id != session.main.quartel_id %}
+                        <a href="{{'/quartel/select/' + session.main.sigla}}">Voltar para {{ session.main.sigla }}</a>
+                    {% endif %}
+                    <a href="/quartel_profile">Perfil da OM</a>
+                    <a href="/profile">Perfil</a>
+                    <a href="/logout">Log Out</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="abas">
+            <ul>
+                {% for option in options %}
+                    <li id="{{ options[option].id }}">
+                        <a href="{{ options[option].action }}">{{ options[option].title }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+            {% if select %}
+                <script type="text/javascript">
+                    var select = "{{ select }}"
+                    var id = "{{ options[select].id }}"
+                    document.querySelector(`.abas li#${id}`).classList.add("select")
+                </script>
+            {% endif %}
+        </div>
+
+    </div>
+{% endmacro %}
+
+
+

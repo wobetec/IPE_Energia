@@ -42,7 +42,7 @@ def login():
 
         # get main OM infos
         quartel = db.execute(
-            "SELECT area, efetivo, demanda_contratada, sigla FROM quarteis WHERE id=?",
+            "SELECT area, efetivo, demanda_contratada, sigla, name FROM quarteis WHERE id=?",
             rows[0]["quartel_id"],
         )
         session["main"] = {
@@ -53,6 +53,7 @@ def login():
         session["quartel"] = {
             "quartel_id": rows[0]["quartel_id"],
             "sigla": quartel[0]["sigla"],
+            "name": quartel[0]["name"],
             "area": quartel[0]["area"],
             "efetivo": quartel[0]["efetivo"],
             "demanda_contratada": quartel[0]["demanda_contratada"],
@@ -60,14 +61,11 @@ def login():
 
         return redirect("/")
 
-    return render_template("users/login.html")
+    return render_template("pages/login.html")
 
 
 @app.route("/logout")
 def logout():
-    """
-        Log user out
-    """
 
     session.clear()
 
@@ -119,7 +117,7 @@ def usersList():
         session["main"]["access_level"],
     )
 
-    return render_template("/users/tasks/list.html", users=users)
+    return render_template("pages/users.html", users=users, aba="list")
 
 
 @app.route("/users/add", methods=["GET", "POST"])
@@ -156,7 +154,7 @@ def userAdd():
 
             return redirect("/users/list")
 
-    return render_template("/users/tasks/add.html")  
+    return render_template("pages/users.html", aba="add")  
 
 
 @app.route("/users/edit/<int:id>", methods=["GET", "POST"])
@@ -179,10 +177,10 @@ def userEdit(id=None):
 
     user = db.execute("SELECT username, access_level, id FROM users WHERE id=?", id)[0]
 
-    return render_template("users/tasks/edit.html", user=user)
+    return render_template("pages/users.html", aba="edit", user=user)
 
 
-@app.route("/users/edit/<int:id>", methods=["POST"])
+@app.route("/users/delete/<int:id>", methods=["POST"])
 @login_required
 @access_level_required(3)
 def userDelete(id=None):
@@ -195,32 +193,3 @@ def userDelete(id=None):
     db.execute("DELETE FROM users WHERE id=?", id)
 
     return redirect("/users/list")
-
-
-@app.route("/users/profile", methods=["POST", "GET"])
-@login_required
-def userProfile():
-
-    if request.method == "POST":
-        id = session["user_id"]
-        user = db.execute("SELECT * FROM users WHERE id = ?", id)[0]
-
-        old = request.form.get("old")
-        password = request.form.get("password")
-        confirmation = request.form.get("confirmation")
-
-        if not check_password_hash(user["hash"], old):
-            apology("wrong old password")
-        elif password == "" or password != confirmation:
-            return apology("Password is blank or the passwords do not match")
-        
-        hashed = generate_password_hash(password)
-        db.execute(
-            "UPDATE users SET hash = ? WHERE id = ?",
-            hashed,
-            id
-        )
-
-        return redirect("/")
-
-    return render_template("users/profile/profile.html")
