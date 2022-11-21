@@ -41,3 +41,69 @@ main.page
         position: absolute
         top: 40%
         width: 100%
+
+.brasao 
+    img
+        width: 200px
+
+.perfil-quartel
+    width: 100%
+    displa: flex
+    flex-direction: column
+    height: 100%
+    overflow-y: scroll
+    border-radius: 20px
+
+    &>*
+        width: 100%
+        padding: 10px 10px
+        background-color: $color4
+        border-radius: 20px
+
+    .infos-personal
+        display: flex
+        flex-direction: row
+        margin-bottom: 20px
+
+        .logo
+            width: 150px
+            margin-right: 30px
+            
+            img
+                width: 100%
+        
+        .dados
+            display: flex
+            flex-direction: column
+            justify-content: center
+            color: white
+
+            h1
+                font-size: 40px
+ 
+    .infos-geral
+        display: flex
+        flex-direction: row
+        justify-content: space-evenly
+        color: white
+
+        .col
+            width: 30%
+            padding: 10px 10px
+            background-color: $color3
+            border-radius: 20px
+
+            h2
+                text-align: center
+
+            .row
+                display: flex
+                flex-direction: column
+                margin: 10px auto
+
+                .title
+                    font-weight: bold
+
+                .dado
+                    margin-left: 30px
+                

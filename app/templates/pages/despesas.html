@@ -54,33 +54,6 @@
         </div>
         <div class="field-container">
             <div class="field-name">
-                <label for="fieldName">Demanda:</label>
-            </div>
-            <div class="field-input">
-                <input type="number" class="before" name="demanda" placeholder="Demanda" >
-                <span class="after">kWh</span>
-            </div>
-        </div>
-        <div class="field-container">
-            <div class="field-name">
-                <label for="fieldName">Efetiva:</label>
-            </div>
-            <div class="field-input">
-                <input type="number" class="before" name="efetiva" placeholder="Efetiva" >
-                <span class="after">kWh</span>
-            </div>
-        </div>
-        <div class="field-container">
-            <div class="field-name">
-                <label for="fieldName">Reativa:</label>
-            </div>
-            <div class="field-input">
-                <input type="number" class="before" name="reativa" placeholder="Reativa" >
-                <span class="after">kWh</span>
-            </div>
-        </div>
-        <div class="field-container">
-            <div class="field-name">
                 <label for="fieldName">Multa:</label>
             </div>
             <div class="field-input">
@@ -88,12 +61,81 @@
                 <input type="number" class="after" name="multa" placeholder="Multa" value="0.00">
             </div>
         </div>
+
+        <div class="field-container">
+            <div class="field-name">
+                <label for="fieldName">Energia Ativa:</label>
+            </div>
+            <div class="field-input">
+                <input type="number" class="before" name="energia_ativa" placeholder="Ativa" >
+                <span class="after">kWh</span>
+            </div>
+        </div>
+        <div class="field-container">
+            <div class="field-name">
+                <label for="fieldName">Energia Reativa:</label>
+            </div>
+            <div class="field-input">
+                <input type="number" class="before" name="energia_reativa" placeholder="Reativa" >
+                <span class="after">kWh</span>
+            </div>
+        </div>
+        {% if infos.grupo_tarifario == "A" %}
+            <div class="field-container">
+                <div class="field-name">
+                    <label for="fieldName">Consumo Ponta:</label>
+                </div>
+                <div class="field-input">
+                    <input type="number" class="before" name="ponta" placeholder="Ponta" >
+                    <span class="after">kWh</span>
+                </div>
+            </div>
+            <div class="field-container">
+                <div class="field-name">
+                    <label for="fieldName">Consumo Fora Ponta:</label>
+                </div>
+                <div class="field-input">
+                    <input type="number" class="before" name="fora_ponta" placeholder="Fora Ponta" >
+                    <span class="after">kWh</span>
+                </div>
+            </div>
+            {% if infos.modalidade == "Verde" %}
+                <div class="field-container">
+                    <div class="field-name">
+                        <label for="fieldName">Demanda Consumida:</label>
+                    </div>
+                    <div class="field-input">
+                        <input type="number" class="before" name="demanda_consumida" placeholder="Demanda Consumida" >
+                        <span class="after">kWh</span>
+                    </div>
+                </div>
+            {% else %}
+                <div class="field-container">
+                    <div class="field-name">
+                        <label for="fieldName">Demanda Consumida Ponta:</label>
+                    </div>
+                    <div class="field-input">
+                        <input type="number" class="before" name="demanda_consumida_ponta" placeholder="Demanda Consumida Ponta"  >
+                        <span class="after">kWh</span>
+                    </div>
+                </div>
+                <div class="field-container">
+                    <div class="field-name">
+                        <label for="fieldName">Demanda Consumida Fora Ponta:</label>
+                    </div>
+                    <div class="field-input">
+                        <input type="number" class="before" name="demanda_consumida_fora_ponta" placeholder="Demanda Consumida Fora Ponta" >
+                        <span class="after">kWh</span>
+                    </div>
+                </div>
+            {% endif %}
+        {% endif %}
         <div class="field-container">
             <div class="field-name">
                 <label for="fieldName">Data fatura:</label>
             </div>
             <div class="field-input">
-                <input class="only" id="data_fatura" name="data_fatura" type="date">
+                <input class="only" id="data_fatura" name="data_fatura" type="month">
             </div>
         </div>
         <button class="btn btn-primary" type="submit">Adicionar</button>
@@ -102,14 +144,13 @@
     <script type="text/javascript">
         var date = new Date();
 
-        var day = date.getDate();
-        var month = date.getMonth() + 1;
+        var month = date.getMonth()+1;
         var year = date.getFullYear();
 
         if (month < 10) month = "0" + month;
-        if (day < 10) day = "0" + day;
 
-        var today = year + "-" + month + "-" + day;
+        var today = year + "-" + month;
+        console.log(today)
         document.getElementById('data_fatura').value = today;
     </script>
 {% endmacro %}
@@ -123,34 +164,7 @@
             </div>
             <div class="field-input">
                 <span class="before">R$</span>
-                <input type="number" class="after" name="valor" placeholder="Valor" value="{{despesa['valor']}}" >
-            </div>
-        </div>
-        <div class="field-container">
-            <div class="field-name">
-                <label for="fieldName">Demanda:</label>
-            </div>
-            <div class="field-input">
-                <input type="number" class="before" name="demanda" placeholder="Demanda" value="{{despesa['demanda']}}" >
-                <span class="after">kWh</span>
-            </div>
-        </div>
-        <div class="field-container">
-            <div class="field-name">
-                <label for="fieldName">Efetiva:</label>
-            </div>
-            <div class="field-input">
-                <input type="number" class="before" name="efetiva" placeholder="Efetiva" value="{{despesa['efetiva']}}" >
-                <span class="after">kWh</span>
-            </div>
-        </div>
-        <div class="field-container">
-            <div class="field-name">
-                <label for="fieldName">Reativa:</label>
-            </div>
-            <div class="field-input">
-                <input type="number" class="before" name="reativa" placeholder="Reativa" value="{{despesa['reativa']}}" >
-                <span class="after">kWh</span>
+                <input type="number" class="after" name="valor" placeholder="Valor" value={{ despesa.valor }}>
             </div>
         </div>
         <div class="field-container">
@@ -159,18 +173,87 @@
             </div>
             <div class="field-input">
                 <span class="before">R$</span>
-                <input type="number" class="after" name="multa" placeholder="Multa" value="{{despesa['multa']}}">
+                <input type="number" class="after" name="multa" placeholder="Multa" value={{ despesa.multa }}>
+            </div>
+        </div>
+
+        <div class="field-container">
+            <div class="field-name">
+                <label for="fieldName">Energia Ativa:</label>
+            </div>
+            <div class="field-input">
+                <input type="number" class="before" name="energia_ativa" placeholder="Ativa" value={{ despesa_consumo.energia_ativa }}>
+                <span class="after">kWh</span>
             </div>
         </div>
         <div class="field-container">
             <div class="field-name">
-                <label for="fieldName">Data fatura:</label>
+                <label for="fieldName">Energia Reativa:</label>
             </div>
-        <div class="field-input">
-                <input class="only" id="data_fatura" name="data_fatura" type="date" value="{{despesa['data_fatura']}}">
+            <div class="field-input">
+                <input type="number" class="before" name="energia_reativa" placeholder="Reativa"  value={{ despesa_consumo.energia_reativa }}>
+                <span class="after">kWh</span>
             </div>
         </div>
-        <button type="submit">Atualizar</button>
+        {% if infos.grupo_tarifario == "A" %}
+            <div class="field-container">
+                <div class="field-name">
+                    <label for="fieldName">Consumo Ponta:</label>
+                </div>
+                <div class="field-input">
+                    <input type="number" class="before" name="ponta" placeholder="Ponta" value={{ despesa_consumo.ponta }}>
+                    <span class="after">kWh</span>
+                </div>
+            </div>
+            <div class="field-container">
+                <div class="field-name">
+                    <label for="fieldName">Consumo Fora Ponta:</label>
+                </div>
+                <div class="field-input">
+                    <input type="number" class="before" name="fora_ponta" placeholder="Fora Ponta" value={{ despesa_consumo.fora_ponta }}>
+                    <span class="after">kWh</span>
+                </div>
+            </div>
+            {% if infos.modalidade == "Verde" %}
+                <div class="field-container">
+                    <div class="field-name">
+                        <label for="fieldName">Demanda Consumida:</label>
+                    </div>
+                    <div class="field-input">
+                        <input type="number" class="before" name="demanda_consumida" placeholder="Demanda Consumida" value={{ despesa_consumo.demanda_consumida }}>
+                        <span class="after">kWh</span>
+                    </div>
+                </div>
+            {% else %}
+                <div class="field-container">
+                    <div class="field-name">
+                        <label for="fieldName">Demanda Consumida Ponta:</label>
+                    </div>
+                    <div class="field-input">
+                        <input type="number" class="before" name="demanda_consumida_ponta" placeholder="Demanda Consumida Ponta" value={{ despesa_consumo.demanda_consumida_ponta }} >
+                        <span class="after">kWh</span>
+                    </div>
+                </div>
+                <div class="field-container">
+                    <div class="field-name">
+                        <label for="fieldName">Demanda Consumida Fora Ponta:</label>
+                    </div>
+                    <div class="field-input">
+                        <input type="number" class="before" name="demanda_consumida_fora_ponta" placeholder="Demanda Consumida Fora Ponta"  value={{ despesa_consumo.demanda_consumida_fora_ponta }}>
+                        <span class="after">kWh</span>
+                    </div>
+                </div>
+            {% endif %}
+        {% endif %}
+        <div class="field-container">
+            <div class="field-name">
+                <label for="fieldName">Data fatura:</label>
+            </div>
+            <div class="field-input">
+                <input class="only" id="data_fatura" name="data_fatura" type="month"  value={{ despesa.data_fatura }}>
+            </div>
+        </div>
+        <button class="btn btn-primary" type="submit">Atualizar</button>
     </form>
 {% endmacro %}
 
@@ -181,10 +264,6 @@
                 <tr>
                     <th>Data</th>
                     <th>Valor</th>
-                    <th>Efetivo</th>
-                    <th>Area</th>
-                    <th>Efetiva</th>
-                    <th>Reativa</th>
                     <th>Multa</th>
                     <th></th>
                     <th></th>
@@ -195,10 +274,6 @@
                 <tr>
                     <td>{{ despesa["data_fatura"] | date }}</td>
                     <td>{{ despesa["valor"] | brl }}</td>
-                    <td>{{ despesa["efetivo"] }}</td>
-                    <td>{{ despesa["area"] | m2 }}</td>
-                    <td>{{ despesa["efetiva"] | kwh }}</td>
-                    <td>{{ despesa["reativa"] | kwh }}</td>
                     <td>{{ despesa["multa"] | brl }}</td>
                     <td>
                         <a href={{ "/despesa/edit/"+ despesa["id"]|string }}>
@@ -207,7 +282,7 @@
                     </td>
                     <td>
                         <a href={{ "/despesa/delete/"+ despesa["id"]|string }}>
-                            <button>DELE</button>
+                            <button>DEL</button>
                         </a>
                     </td>
 

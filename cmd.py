@@ -28,9 +28,12 @@ if option == "migrate":
 
     print("Building...")
     os.system("type models.sql | sqlite3 database.db")
+    print("Populating...")
+    os.system("type data.sql | sqlite3 database.db")
     print("Done!")
 
     sys.exit()
+    
 elif option == "debug":
     os.system("flask --app app --debug run")
 

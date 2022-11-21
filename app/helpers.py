@@ -1,7 +1,7 @@
 from flask import redirect, render_template, request, session
 from functools import wraps
-from app.var import DEFAULT_APOLOGY
-
+from app.var import DEFAULT_APOLOGY, ALLOWED_EXTENSIONS
+import json
 
 def apology(message, code=400):
     """
@@ -35,8 +35,7 @@ def login_required(f):
             return redirect("/login")
         return f(*args, **kwargs)
     return decorated_function
-
-
+    
 def access_level_required(level):
     """
         Decorator to check access level
@@ -59,27 +58,45 @@ class filters():
 
     def kwh(value):
         """Format value as energy in kwh"""
+        if value == None:
+            return ""
         return f"{value:,.2f}kWh"
 
     def m2(value):
         """Format value as energy in kwh"""
         return f"{value:,.2f}m\u00b2"
+
+    def sn(value):
+        if value:
+            return "Sim"
+        else:
+            return "Não"
     
     def date(value):
         year = value[:4]
         month = value[5:7]
-        day = value[8:]
-        return f"{day}/{month}/{year}"
+        return f"{month}/{year}"
 
 
 
 def recursive_get_subordinados(db, OM):
-    lista = {}
+    brasao = db.execute("SELECT brasao FROM quarteis WHERE sigla=?", OM)[0]["brasao"]
+    lista = {
+        "brasao":brasao,
+        "subs":{}
+    }
     quartel_id = db.execute("SELECT id FROM quarteis WHERE sigla=?", OM)[0]["id"]
     subs = db.execute("SELECT * FROM hierarquia WHERE quartel_id=?", quartel_id)[0]
     subs.pop("id")
     subs.pop("quartel_id")
     for poss_sub in subs:
         if subs[poss_sub] == 1:
-            lista[poss_sub] = recursive_get_subordinados(db, poss_sub)
+            lista["subs"][poss_sub] = recursive_get_subordinados(db, poss_sub)
     return lista
+
+
+def allowed_file(filename):
+    return '.' in filename and \
+        filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+

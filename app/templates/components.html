@@ -12,30 +12,36 @@
             <span class="item">Despesas</span>
         </a>
     </li>
-    <li>
-        <a href="/geracao" id="sidebar-geracao">
-            <span class="icon"><i class="fas fa-solid fa-table"></i></i></span>
-            <span class="item">Geração</span>
-        </a>
-    </li>
-    <li>
-        <a href="/gerador" id="sidebar-geradores">
-            <span class="icon"><i class="fas fa-solid fa-table"></i></i></span>
-            <span class="item">Geradores</span>
-        </a>
-    </li>
-    <li>
-        <a href="/quartel" id="sidebar-quarteis">
-            <span class="icon"><i class="fas fa-home"></i></span>
-            <span class="item">OMs subordinadas</span>
-        </a>
-    </li>
-    <li>
-        <a href="/users" id="sidebar-users">
-            <span class="icon"><i class="fas fa-home"></i></span>
-            <span class="item">Usuários</span>
-        </a>
-    </li>
+    {% if session.quartel.tem_geracao_distribuida %}
+        <li>
+            <a href="/gerador" id="sidebar-geradores">
+                <span class="icon"><i class="fas fa-solid fa-car-battery"></i></i></span>
+                <span class="item">Geradores</span>
+            </a>
+        </li>
+        <li>
+            <a href="/geracao" id="sidebar-geracao">
+                <span class="icon"><i class="fas fa-solid fa-bolt"></i></i></span>
+                <span class="item">Geração</span>
+            </a>
+        </li>
+    {% endif %}
+    {% if session.quartel.tem_subordinado and session.main.access_level <= 1 %}
+        <li>
+            <a href="/quartel" id="sidebar-quarteis">
+                <span class="icon"><i class="fas fa-house-flag"></i></span>
+                <span class="item">OMs subordinadas</span>
+            </a>
+        </li>
+    {% endif %}
+    {% if session.main.access_level <= 1 %}
+        <li>
+            <a href="/users" id="sidebar-users">
+                <span class="icon"><i class="fas fa-users-viewfinder"></i></span>
+                <span class="item">Usuários</span>
+            </a>
+        </li>
+    {% endif %}
 
     {% set only = onlyOne.split()[0] %}
 
@@ -63,7 +69,11 @@
 {% macro sidebar(selected, access=None) %}
     <div class="sidebar">
         <div class="quartel">
-            <img src="{{url_for('static', filename='images/placeholder_brasao.png')}}" alt="">
+            {% if session["quartel"]["brasao"] == "" %}
+                <img src={{url_for('static', filename='images/placeholder_brasao.png')}} alt="">
+            {% else %}
+                <img src={{url_for('static', filename="images/brasoes/"+session['quartel']['brasao'])}} alt=""> 
+            {% endif %}
             <h2>{{ session.quartel.name }}</h2>
             <p>{{ access }}</p>
         </div>
@@ -78,7 +88,9 @@
 
         <script type="text/javascript">
             var selectedPage = document.getElementById(`sidebar-${"{{selected}}"}`)
-            selectedPage.classList.add("active")
+            if(selectedPage){
+                selectedPage.classList.add("active")
+            }
             var hide = document.querySelector(".hide");
             hide.addEventListener("click", function(){
                 document.querySelector(".sidebar").classList.toggle("close");

@@ -18,6 +18,11 @@ body {
 }
 
 /* forms style */
+.conditional-fields h2 {
+  color: white;
+  text-align: center;
+}
+
 .field-container {
   display: flex;
   justify-content: center;
@@ -69,6 +74,55 @@ body {
 }
 .field-container .field-input input.only {
   border-radius: 10px;
+}
+.field-container .field-input .checkbox-container {
+  display: block;
+  position: relative;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  margin-right: 25px;
+}
+.field-container .field-input .checkbox-container:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+.field-container .field-input .checkbox-container input[type=checkbox] {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+.field-container .field-input .checkbox-container input[type=checkbox]:checked ~ .checkmark {
+  background-color: #2196F3;
+}
+.field-container .field-input .checkbox-container input[type=checkbox]:checked ~ .checkmark:after {
+  display: block;
+}
+.field-container .field-input .checkbox-container .checkmark {
+  position: absolute;
+  top: 5px;
+  left: 0;
+  height: 30px;
+  width: 30px;
+  background-color: #eee;
+}
+.field-container .field-input .checkbox-container .checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+  left: 9px;
+  top: 7px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
 }
 .field-container .field-input select {
   height: 100%;
@@ -531,4 +585,70 @@ main.page h1 {
   position: absolute;
   top: 40%;
   width: 100%;
+}
+
+.brasao img {
+  width: 200px;
+}
+
+.perfil-quartel {
+  width: 100%;
+  displa: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: scroll;
+  border-radius: 20px;
+}
+.perfil-quartel > * {
+  width: 100%;
+  padding: 10px 10px;
+  background-color: #0a8967;
+  border-radius: 20px;
+}
+.perfil-quartel .infos-personal {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 20px;
+}
+.perfil-quartel .infos-personal .logo {
+  width: 150px;
+  margin-right: 30px;
+}
+.perfil-quartel .infos-personal .logo img {
+  width: 100%;
+}
+.perfil-quartel .infos-personal .dados {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: white;
+}
+.perfil-quartel .infos-personal .dados h1 {
+  font-size: 40px;
+}
+.perfil-quartel .infos-geral {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  color: white;
+}
+.perfil-quartel .infos-geral .col {
+  width: 30%;
+  padding: 10px 10px;
+  background-color: #09c184;
+  border-radius: 20px;
+}
+.perfil-quartel .infos-geral .col h2 {
+  text-align: center;
+}
+.perfil-quartel .infos-geral .col .row {
+  display: flex;
+  flex-direction: column;
+  margin: 10px auto;
+}
+.perfil-quartel .infos-geral .col .row .title {
+  font-weight: bold;
+}
+.perfil-quartel .infos-geral .col .row .dado {
+  margin-left: 30px;
 }

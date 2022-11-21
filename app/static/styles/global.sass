@@ -15,7 +15,13 @@ body
     background-color: $color-body
 
 
+
 /* forms style */
+.conditional-fields
+    
+    h2 
+        color: white
+        text-align: center
 
 .field-container 
     display: flex
@@ -71,6 +77,58 @@ body
 
             &.only
                 border-radius: 10px
+        
+        .checkbox-container
+            display: block
+            position: relative
+            cursor: pointer
+            font-size: 22px
+            -webkit-user-select: none
+            -moz-user-select: none
+            -ms-user-select: none
+            user-select: none
+            margin-right: 25px
+
+            &:hover input ~ .checkmark 
+                background-color: #ccc
+                
+        
+            input[type="checkbox"]
+                position: absolute
+                opacity: 0
+                cursor: pointer
+                height: 0
+                width: 0
+
+                &:checked ~ .checkmark 
+                    background-color: #2196F3
+                
+                &:checked ~ .checkmark:after 
+                    display: block
+                    
+        
+            .checkmark
+                position: absolute
+                top: 5px
+                left: 0
+                height: 30px
+                width: 30px
+                background-color: #eee
+
+                &:after
+                    content: ""
+                    position: absolute
+                    display: none
+                    left: 9px
+                    top: 7px
+                    width: 5px
+                    height: 10px
+                    border: solid white
+                    border-width: 0 3px 3px 0
+                    -webkit-transform: rotate(45deg)
+                    -ms-transform: rotate(45deg)
+                    transform: rotate(45deg)
+                    
 
         select 
             height: 100%

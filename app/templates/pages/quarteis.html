@@ -13,33 +13,19 @@
             "id":"list",
             "action":"/quartel/list"
         },
-        "edit":{
-            "title":"Editar",
-            "id":"edit",
-            "action":"/quartel/edit"
-        },
     },
     "selected_aba":aba
-
 } %}
-
-{% if aba != "edit" %}
-    {% set temp = g.abas.pop("edit") %}
-{% endif %}
 
 {% block page %}
 
     {% if aba == "add" %}
         {{ add() }}
-    {% elif aba == "edit" %}
-        {{ edit() }}
     {% elif aba == "list" %}
         {{ list() }}
     {% endif %}
 
-
 {% endblock %}
-
 
 {% macro add() %}
     <form action="/quartel/add" method="post">
@@ -78,11 +64,24 @@
         </div>
         <div class="field-container">
             <div class="field-name">
-                <label for="fieldName">Demanda Contratada:</label>
+                <label for="fieldName">Tolerância ultrapassagem de demanda:</label>
             </div>
             <div class="field-input">
-                <input type="number" class="before" name="demanda_contratada" placeholder="Demanda Contratada" >
-                <span class="after">kWh</span>
+                <input type="number" class="before" name="tolerancia_ultrapassagem_demanda" placeholder="Tolerância" >
+                <span class="after">%</span>
+            </div>
+        </div>
+        <div class="field-container">
+            <div class="field-name">
+                <label for="fieldName">Concessionária:</label>
+            </div>
+            <div class="field-input">
+                <select name="concessionaria_id" class="only" >
+                    <option disable selected>Concessionária</option>
+                    {% for cons in concessionarias %}
+                        <option value="{{cons.id}}" >{{cons.name}}</option>
+                    {% endfor %}
+                </select>
             </div>
         </div>
         <div class="field-container">
@@ -90,12 +89,174 @@
                 <label for="fieldName">Grupo Tarifario:</label>
             </div>
             <div class="field-input">
-                <select name="grupo_tarifario" class="only" >
+                <select name="grupo_tarifario" id="grupo_tarifario" class="only" onChange="changeGrupoTarifa()">
                     <option disable selected>Grupo</option>
-                    <option value="A" >A</option>
-                    <option value="B" >B</option>
+                    {% for grupo in GRUPOS_TARIFARIOS %}
+                        <option value="{{grupo}}" >{{grupo}}</option>
+                    {% endfor %}
                 </select>
             </div>
+            <script type="text/javascript">
+                
+                function changeGrupoTarifa(){
+                    var field_modalidade1 = document.getElementById("modalidade1")
+                    var option = document.getElementById("grupo_tarifario").value
+                    
+                    changeModalidade()
+
+                    if(option == "A"){
+                        field_modalidade1.style.display = "flex"
+                    }else{
+                        field_modalidade1.style.display = "none"
+                        document.getElementById("verde").style.display = "none"
+                        document.getElementById("azul").style.display = "none"
+                    }
+
+                    var selectSubgrupo = document.getElementById("subgrupo")
+                    for(let i = selectSubgrupo.options.length; i >= 1; i--){
+                        selectSubgrupo.remove(i);
+                    }
+        
+                    var subgrupos = {{ GRUPOS_TARIFARIOS|tojson  }}[option].SUBGRUPO
+                    console.log(subgrupos)
+                    var size = Object.keys(subgrupos).length
+
+                    for(let i = 1; i <= size; i++){
+                        let newOption = new Option(subgrupos[i], i)
+                        selectSubgrupo.add(newOption, undefined)
+                    }
+                }
+            </script>
+        </div>
+        <div class="field-container" id="modalidade1" style="display: none">
+            <div class="field-name">
+                <label for="fieldName">Modalidade:</label>
+            </div>
+            <div class="field-input">
+                <select name="modalidade" id="modalidade" class="only" onChange="changeModalidade()">
+                    <option disable selected>Modalidade</option>
+                    {% for mod in GRUPOS_TARIFARIOS.A.MODALIDADE_CONTRATADA %}
+                        <option value="{{mod}}" >{{mod}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <script type="text/javascript">
+                
+                function changeModalidade(){
+                    var option = document.getElementById("modalidade").value
+                    
+                    if(option == "Azul"){
+                        document.getElementById("azul").style.display = "block"
+                        document.getElementById("verde").style.display = "none"
+                    }else if(option == "Verde"){
+                        document.getElementById("verde").style.display = "block"
+                        document.getElementById("azul").style.display = "none"
+                    }else{
+                        document.getElementById("verde").style.display = "none"
+                        document.getElementById("azul").style.display = "none"
+                    }
+                }
+            </script>
+        </div>
+
+        <div class="conditional-fields" id="azul" style="display: none">
+            <h2>Demanda contratada</h2>
+            <div class="field-container">
+                <div class="field-name">
+                    <label for="fieldName">Úmida Ponta:</label>
+                </div>
+                <div class="field-input">
+                    <input autocomplete="off" autofocus class="only" name="umida_ponta" placeholder="Úmida Ponta" type="number">
+                </div>
+            </div>
+            <div class="field-container">
+                <div class="field-name">
+                    <label for="fieldName">Úmida Fora Ponta:</label>
+                </div>
+                <div class="field-input">
+                    <input autocomplete="off" autofocus class="only" name="umida_fora_ponta" placeholder="Úmida Fora Ponta" type="number">
+                </div>
+            </div>
+            <div class="field-container">
+                <div class="field-name">
+                    <label for="fieldName">Seca Ponta:</label>
+                </div>
+                <div class="field-input">
+                    <input autocomplete="off" autofocus class="only" name="seca_ponta" placeholder="Seca Ponta" type="number">
+                </div>
+            </div>
+            <div class="field-container">
+                <div class="field-name">
+                    <label for="fieldName">Seca Fora Ponta:</label>
+                </div>
+                <div class="field-input">
+                    <input autocomplete="off" autofocus class="only" name="seca_fora_ponta" placeholder="Seca Fora Ponta" type="number">
+                </div>
+            </div>
+        </div>
+
+        <div class="conditional-fields" id="verde" style="display: none">
+            <h2>Demanda contratada</h2>
+            <div class="field-container">
+                <div class="field-name">
+                    <label for="fieldName">Úmida:</label>
+                </div>
+                <div class="field-input">
+                    <input autocomplete="off" autofocus class="only" name="umida" placeholder="Úmida" type="number">
+                </div>
+            </div>
+            <div class="field-container">
+                <div class="field-name">
+                    <label for="fieldName">Seca:</label>
+                </div>
+                <div class="field-input">
+                    <input autocomplete="off" autofocus class="only" name="seca" placeholder="Seca" type="number">
+                </div>
+            </div>
+        </div>
+
+        <div class="field-container">
+            <div class="field-name">
+                <label for="fieldName">Subgrupo:</label>
+            </div>
+            <div class="field-input">
+                <select name="subgrupo" id="subgrupo" class="only" >
+                    <option disable selected>Subgrupo</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="field-container">
+            <div class="field-input">
+                <label class="checkbox-container">
+                    <input type="checkbox" class="only" name="tem_subordinado" id="tem_subordinado" placeholder="Area" onclick="checkboxFunction()" >
+                    <span class="checkmark"></span>
+                </label>
+            </div>
+            <div class="field-name">
+                <label for="fieldName">Tem OMs subordinadas</label>
+            </div>
+            <script type="text/javascript">
+                function checkboxFunction(name){
+
+                }
+                </script>
+        </div>
+        <div class="field-container">
+            <div class="field-input">
+                <label class="checkbox-container">
+                    <input type="checkbox" class="only" name="tem_geracao_distribuida" id="tem_geracao_distribuida" placeholder="Area" onclick="checkboxFunction('tem_geracao_distribuida')" >
+                    <span class="checkmark"></span>
+                </label>
+            </div>
+            <div class="field-name">
+                <label for="fieldName">Tem geração distribuida</label>
+            </div>
+            <script type="text/javascript">
+                function checkboxFunction(name){
+
+                }
+                </script>
         </div>
         <button type="submit">Adicionar</button>
     </form>
@@ -111,16 +272,20 @@
     </div>
 {% endmacro %}
 
-{% macro recursive_list(sublist) %}
-    {% for sub in sublist %}
+{% macro recursive_list(subdict) %}
+    {% for sub in subdict %}
         <li>
             <a href={{"/quartel/select/" + sub}}>
-                <img src="{{url_for('static', filename='images/placeholder_brasao.png')}}" alt="">
+                {% if subdict[sub].brasao == ""%}
+                    <img src={{url_for('static', filename='images/placeholder_brasao.png')}} alt="">
+                {% else %}
+                    <img src={{url_for('static', filename="images/brasoes/"+subdict[sub].brasao)}} alt=""> 
+                {% endif %}
                 <span>{{sub}}</span>
             </a>
-            {% if sublist[sub]|length %}
+            {% if subdict[sub].subs|length %}
                 <ul>
-                    {{ recursive_list(sublist[sub]) }}
+                    {{ recursive_list(subdict[sub].subs) }}
                 </ul>
             {% endif %}
         </li>

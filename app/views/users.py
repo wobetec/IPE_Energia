@@ -42,7 +42,7 @@ def login():
 
         # get main OM infos
         quartel = db.execute(
-            "SELECT area, efetivo, demanda_contratada, sigla, name FROM quarteis WHERE id=?",
+            "SELECT * FROM quarteis WHERE id=?",
             rows[0]["quartel_id"],
         )
         session["main"] = {
@@ -54,9 +54,9 @@ def login():
             "quartel_id": rows[0]["quartel_id"],
             "sigla": quartel[0]["sigla"],
             "name": quartel[0]["name"],
-            "area": quartel[0]["area"],
-            "efetivo": quartel[0]["efetivo"],
-            "demanda_contratada": quartel[0]["demanda_contratada"],
+            "brasao": quartel[0]["brasao"],
+            "tem_subordinado": quartel[0]["tem_subordinado"],
+            "tem_geracao_distribuida": quartel[0]["tem_geracao_distribuida"],
         }
 
         return redirect("/")
@@ -94,7 +94,7 @@ def register(cheat=None, password=None):
                 cheat,
                 hashed,
                 1,
-                1,
+                0,
             )
 
             return redirect("/")
@@ -105,7 +105,7 @@ def register(cheat=None, password=None):
 @app.route("/users", methods=["GET"])
 @app.route("/users/list", methods=["GET"])
 @login_required
-@access_level_required(3)
+@access_level_required(1)
 def usersList():
     """
         List all users under the access_level of user
@@ -122,7 +122,7 @@ def usersList():
 
 @app.route("/users/add", methods=["GET", "POST"])
 @login_required
-@access_level_required(3)
+@access_level_required(1)
 def userAdd():
     if request.method == "POST":
         username = request.form.get("username")
@@ -159,7 +159,7 @@ def userAdd():
 
 @app.route("/users/edit/<int:id>", methods=["GET", "POST"])
 @login_required
-@access_level_required(3)
+@access_level_required(1)
 def userEdit(id=None):
     if request.method == "POST":
         access_level = int(request.form.get("access_level"))
@@ -182,7 +182,7 @@ def userEdit(id=None):
 
 @app.route("/users/delete/<int:id>", methods=["POST"])
 @login_required
-@access_level_required(3)
+@access_level_required(1)
 def userDelete(id=None):
 
     access_level = db.execute("SELECT access_level FROM users WHERE id=?", id)
