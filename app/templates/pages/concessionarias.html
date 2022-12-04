@@ -257,7 +257,7 @@
                     </div>
                     <div class="field-input">
                         <span class="before">R$</span>
-                        <input autocomplete="off" autofocus class="after" name="consumo_b" placeholder="Consumo B" type="number">
+                        <input autocomplete="off" autofocus class="after" name="consumo_b" placeholder="Consumo B" type="number" step="any">
                     </div>
                 </div>
             </div>
@@ -268,7 +268,7 @@
                     </div>
                     <div class="field-input">
                         <span class="before">R$</span>
-                        <input autocomplete="off" autofocus class="after" name="consumo_ponta" placeholder="Consumo Ponta" type="number">
+                        <input autocomplete="off" autofocus class="after" name="consumo_ponta" placeholder="Consumo Ponta" type="number" step="any">
                     </div>
                 </div>
                 <div class="field-container">
@@ -277,7 +277,7 @@
                     </div>
                     <div class="field-input">
                         <span class="before">R$</span>
-                        <input autocomplete="off" autofocus class="after" name="consumo_fora_ponta" placeholder="Consumo Fora Ponta" type="number">
+                        <input autocomplete="off" autofocus class="after" name="consumo_fora_ponta" placeholder="Consumo Fora Ponta" type="number" step="any" >
                     </div>
                 </div>
                 <div class="conditional-fields" id="azul" style="display: none">
@@ -287,7 +287,7 @@
                         </div>
                         <div class="field-input">
                             <span class="before">R$</span>
-                            <input autocomplete="off" autofocus class="after" name="demanda_ponta" placeholder="Demanda Ponta" type="number">
+                            <input autocomplete="off" autofocus class="after" name="demanda_ponta" placeholder="Demanda Ponta" type="number" step="any">
                         </div>
                     </div>
                     <div class="field-container">
@@ -296,7 +296,7 @@
                         </div>
                         <div class="field-input">
                             <span class="before">R$</span>
-                            <input autocomplete="off" autofocus class="after" name="demanda_fora_ponta" placeholder="Demanda Fora Ponta" type="number">
+                            <input autocomplete="off" autofocus class="after" name="demanda_fora_ponta" placeholder="Demanda Fora Ponta" type="number" step="any">
                         </div>
                     </div>
                     <div class="field-container">
@@ -305,7 +305,7 @@
                         </div>
                         <div class="field-input">
                             <span class="before">R$</span>
-                            <input autocomplete="off" autofocus class="after" name="ultrapassagem_demanda_ponta" placeholder="Ultrapassagem Demanda Ponta" type="number">
+                            <input autocomplete="off" autofocus class="after" name="ultrapassagem_demanda_ponta" placeholder="Ultrapassagem Demanda Ponta" type="number" step="any">
                         </div>
                     </div>
                     <div class="field-container">
@@ -314,7 +314,7 @@
                         </div>
                         <div class="field-input">
                             <span class="before">R$</span>
-                            <input autocomplete="off" autofocus class="after" name="ultrapassagem_demanda_fora_ponta" placeholder="Ultrapassagem Demanda Fora Ponta" type="number">
+                            <input autocomplete="off" autofocus class="after" name="ultrapassagem_demanda_fora_ponta" placeholder="Ultrapassagem Demanda Fora Ponta" type="number" step="any">
                         </div>
                     </div>
                 </div>
@@ -325,7 +325,7 @@
                         </div>
                         <div class="field-input">
                             <span class="before">R$</span>
-                            <input autocomplete="off" autofocus class="after" name="demanda_verde" placeholder="Demanda Verde" type="number">
+                            <input autocomplete="off" autofocus class="after" name="demanda_verde" placeholder="Demanda Verde" type="number" step="any" >
                         </div>
                     </div>
                     <div class="field-container">
@@ -334,7 +334,7 @@
                         </div>
                         <div class="field-input">
                             <span class="before">R$</span>
-                            <input autocomplete="off" autofocus class="after" name="ultrapassagem_demanda_verde" placeholder="Ultrapassagem Demanda Verde" type="number">
+                            <input autocomplete="off" autofocus class="after" name="ultrapassagem_demanda_verde" placeholder="Ultrapassagem Demanda Verde" type="number" step="any">
                         </div>
                     </div>
                 </div>
@@ -364,7 +364,7 @@
                         </div>
                         <div class="field-input">
                             <span class="before">R$</span>
-                            <input autocomplete="off" autofocus class="after" name="consumo_b" placeholder="Consumo B" type="number" value={{tarifa["consumo_b"]}}>
+                            <input autocomplete="off" autofocus class="after" name="consumo_b" placeholder="Consumo B" type="number" step="any" value={{tarifa["consumo_b"]}}>
                         </div>
                     </div>
                 </div>
@@ -377,7 +377,7 @@
                         </div>
                         <div class="field-input">
                             <span class="before">R$</span>
-                            <input autocomplete="off" autofocus class="after" name="consumo_ponta" placeholder="Consumo Ponta" type="number" value={{tarifa["consumo_ponta"]}}>
+                            <input autocomplete="off" autofocus class="after" name="consumo_ponta" placeholder="Consumo Ponta" type="number" step="any" value={{tarifa["consumo_ponta"]}}>
                         </div>
                     </div>
                     <div class="field-container">
@@ -386,7 +386,7 @@
                         </div>
                         <div class="field-input">
                             <span class="before">R$</span>
-                            <input autocomplete="off" autofocus class="after" name="consumo_fora_ponta" placeholder="Consumo Fora Ponta" type="number" value={{tarifa["consumo_fora_ponta"]}}>
+                            <input autocomplete="off" autofocus class="after" name="consumo_fora_ponta" placeholder="Consumo Fora Ponta" type="number" step="any" value={{tarifa["consumo_fora_ponta"]}}>
                         </div>
                     </div>
                     {% if tarifa.modalidade == "Azul" %}
@@ -397,7 +397,7 @@
                                 </div>
                                 <div class="field-input">
                                     <span class="before">R$</span>
-                                    <input autocomplete="off" autofocus class="after" name="demanda_ponta" placeholder="Demanda Ponta" type="number" value={{tarifa["demanda_ponta"]}}>
+                                    <input autocomplete="off" autofocus class="after" name="demanda_ponta" placeholder="Demanda Ponta" type="number" step="any" value={{tarifa["demanda_ponta"]}}>
                                 </div>
                             </div>
                             <div class="field-container">
@@ -406,7 +406,7 @@
                                 </div>
                                 <div class="field-input">
                                     <span class="before">R$</span>
-                                    <input autocomplete="off" autofocus class="after" name="demanda_fora_ponta" placeholder="Demanda Fora Ponta" type="number" value={{tarifa["demanda_fora_ponta"]}}>
+                                    <input autocomplete="off" autofocus class="after" name="demanda_fora_ponta" placeholder="Demanda Fora Ponta" type="number" step="any" value={{tarifa["demanda_fora_ponta"]}}>
                                 </div>
                             </div>
                             <div class="field-container">
@@ -415,7 +415,7 @@
                                 </div>
                                 <div class="field-input">
                                     <span class="before">R$</span>
-                                    <input autocomplete="off" autofocus class="after" name="ultrapassagem_demanda_ponta" placeholder="Ultrapassagem Demanda Ponta" type="number" value={{tarifa["ultrapassagem_demanda_ponta"]}}>
+                                    <input autocomplete="off" autofocus class="after" name="ultrapassagem_demanda_ponta" placeholder="Ultrapassagem Demanda Ponta" type="number" step="any" value={{tarifa["ultrapassagem_demanda_ponta"]}}>
                                 </div>
                             </div>
                             <div class="field-container">
@@ -424,7 +424,7 @@
                                 </div>
                                 <div class="field-input">
                                     <span class="before">R$</span>
-                                    <input autocomplete="off" autofocus class="after" name="ultrapassagem_demanda_fora_ponta" placeholder="Ultrapassagem Demanda Fora Ponta" type="number" value={{tarifa["ultrapassagem_demanda_fora_ponta"]}}>
+                                    <input autocomplete="off" autofocus class="after" name="ultrapassagem_demanda_fora_ponta" placeholder="Ultrapassagem Demanda Fora Ponta" type="number" step="any" value={{tarifa["ultrapassagem_demanda_fora_ponta"]}}>
                                 </div>
                             </div>
                         </div>
@@ -437,7 +437,7 @@
                                 </div>
                                 <div class="field-input">
                                     <span class="before">R$</span>
-                                    <input autocomplete="off" autofocus class="after" name="demanda_verde" placeholder="Demanda Verde" type="number" value={{tarifa["demanda_verde"]}}>
+                                    <input autocomplete="off" autofocus class="after" name="demanda_verde" placeholder="Demanda Verde" type="number" step="any" value={{tarifa["demanda_verde"]}}>
                                 </div>
                             </div>
                             <div class="field-container">
@@ -446,7 +446,7 @@
                                 </div>
                                 <div class="field-input">
                                     <span class="before">R$</span>
-                                    <input autocomplete="off" autofocus class="after" name="ultrapassagem_demanda_verde" placeholder="Ultrapassagem Demanda Verde" type="number" value={{tarifa["ultrapassagem_demanda_verde"]}}>
+                                    <input autocomplete="off" autofocus class="after" name="ultrapassagem_demanda_verde" placeholder="Ultrapassagem Demanda Verde" type="number" step="any" value={{tarifa["ultrapassagem_demanda_verde"]}}>
                                 </div>
                             </div>
                         </div>

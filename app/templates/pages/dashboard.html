@@ -3,5 +3,213 @@
 {% set g = {"page":"dashboard"} %}
 
 {% block page %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+
+<div id="dashboard-tudo">
+  <!-- Primeira div - Gráficos -->
+  <div id="dashboard-graficos">
+
+      <!-- Primeiro gráfico - consumo mensal - gráfico em linha -->
+      <div id="primeiro-grafico">
+        <canvas id="consumo_mensal" width="950" height="300"></canvas>
+        <script type="text/javascript">
+          var consumo = {{consumo_mensal}}
+          console.log(consumo)
+          var data = {{data_mensal | safe}}
+          console.log(data)
+          var ctx = document.getElementById('consumo_mensal').getContext('2d');
+          var myChart = new Chart(ctx,{
+            type: 'line',
+            data: {
+              labels: data,
+              datasets:[{
+                label:'Consumo Mensal (kWh)',
+                data: consumo,
+                backgroundColor: "#668697",
+                borderColor: "#ccd7dc",
+                fill: false
+              }]
+            },
+            options: {
+              elements: {
+                line: {
+                  tension: 0
+                }
+              },
+              responsive: true,
+              plugins: {
+                legend: {
+                  position: 'top',
+                  color: 'blue'
+                  }
+                },
+                title: {
+                  display: false,
+                  text: 'Chart.js Line Chart'
+                },
+                scales: {
+                    yAxes: [{
+                      ticks: {
+                        color: 'blue',
+                        beginAtZero: true
+                      }
+                    }]
+                  }
+              },
+            },
+          )
+          </script>
+    </div> 
+
+    <!-- Segundo gráfico - Energia ativa e reativa - gráfico em barra -->
+    <div id="segundo-grafico">
+      <canvas id="energia_ativa_reativa" width="950" height="300"></canvas>
+      <script>
+          var data = {{data_mensal | safe}}
+          console.log(data)
+          var energia_ativa = {{energia_ativa}}
+          console.log(energia_ativa)
+          var energia_reativa = {{energia_reativa}}
+          console.log(energia_reativa)
+          Chart.defaults.global.defaultFontColor = '#fcfcfc'
+          var ctx = document.getElementById('energia_ativa_reativa').getContext('2d');
+          var myChart = new Chart(ctx,{
+            type: 'bar',
+              data: {
+                  labels: data,
+                  datasets:[{
+                    label:'Energia Ativa (kWh)',
+                    data: energia_ativa,
+                    backgroundColor: "#002031" 
+                  },
+                  {
+                      label:'Energia Reativa (kWh)',
+                      data:energia_reativa,
+                      backgroundColor: "#335d74"
+                  }]
+              },
+              options: {
+                  responsive: true,
+                  plugins: {
+                      legend: {
+                          position: 'top',
+                      },
+                      title: {
+                          display: true,
+                          text: 'Chart.js Line Chart'
+                      }
+                    },
+                  scales: {
+                    yAxes: [{
+                      ticks: {
+                        color: 'blue',
+                        beginAtZero: true
+                      }
+                    }]
+                  }
+              },
+            })
+      </script>
+    </div>
+  </div>
+  <div>&nbsp;</div>
+  <!-- Segunda div - Fator de potência, consumo por área, consumo por militar e consumo Total -->
+  <div id="dashboard-dados">
+    {% if fator_pot|length > 0 %}
+    <!-- Fatores de potência -->
+    <div>
+      <table class="content-table">
+        <thead>
+          <tr>
+            <th>Fator de Potência</th>
+          </tr>
+        </thead>
+      </table>
+      <table class="content-table">
+        <thead>
+          <!-- <tr>
+            <th>Fator de Potência</th>
+          </tr> -->
+          <tr>
+            <th>Mês/Ano</th>
+            <th>Valor</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="active-row">
+            <td>{{ data_mensal[-1] }}</td>
+            <td>{{ (fator_pot[-1]*100)|round(4) }}%</td>
+          </tr>
+          {% if fator_pot|length > 1 %}
+          <tr class="active-row">
+            <td>{{ data_mensal[-2] }}</td>
+            <td>{{ (fator_pot[-2]*100)|round(4) }}%</td>
+          </tr>
+          {% if fator_pot|length > 2 %}
+          <tr class="active-row">
+            <td>{{ data_mensal[-3] }}</td>
+            <td>{{ (fator_pot[-3]*100)|round(4) }}%</td>
+          </tr>
+          {% endif %}
+          {% endif %}
+        </tbody>
+    </table>
+    </div>
+    {% endif %}
+    <!-- Dados -->
+      <!-- Bloco do consumo por militar -->
+      <div>
+        <table class="content-table">
+          <thead>
+            <tr>
+              <th>Consumo Por Militar (12 meses, kWh)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% if efetivo[0] is not none%}
+              <tr class="active-row">
+                <td>{{ (consumo_total/efetivo[0])|round(2) }}</td>
+              </tr>
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Bloco do consumo por área -->
+      <div>
+        <table class="content-table">
+          <thead>
+            <tr>
+              <th>Consumo Por Área (12 meses, kWh/m²)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% if area[0] is not none%}
+            <tr class="active-row">
+              <td>{{ (consumo_total/area[0])|round(2) }}</td>
+            </tr>
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Bloco de consumo total dos últimos 12 meses -->
+      <div>
+        <table class="content-table">
+          <thead>
+            <tr>
+              <th>Consumo Total (12 meses, kWh)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="active-row">
+              <td>{{consumo_total}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    
+  </div>
+</div>
 
 {% endblock %}

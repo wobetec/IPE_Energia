@@ -14,7 +14,7 @@ html, body {
 }
 
 body {
-  background-color: #0c5149;
+  background-color: #333333;
 }
 
 /* forms style */
@@ -168,7 +168,7 @@ button:hover, input[type=submit]:hover {
 }
 
 ::-webkit-scrollbar-track {
-  background-color: #0c5149;
+  background-color: #333333;
   border-radius: 10px;
 }
 
@@ -350,6 +350,7 @@ button:hover, input[type=submit]:hover {
   min-width: 160px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
+  border-radius: 10px;
 }
 .dropdown .dropdown-content:hover {
   display: block;
@@ -365,7 +366,7 @@ button:hover, input[type=submit]:hover {
 }
 
 .table-container {
-  background-color: #0a8967;
+  background-color: #555555;
   border-radius: 20px;
   height: 100%;
   padding: 10px 20px;
@@ -402,7 +403,7 @@ button:hover, input[type=submit]:hover {
 
 /* Experimental for multiple parents */
 .diagram-container {
-  background-color: #0a8967;
+  background-color: #555555;
   border-radius: 20px;
   height: 100%;
   padding: 10px 20px;
@@ -575,7 +576,34 @@ main.page h1 {
   color: white;
 }
 
-.page-login .header {
+#page-login{
+  display: flex;
+  background-color: #333333;
+}
+.login-logo{
+  width: 60vw;
+  display: flex;
+  justify-content: space-between;
+  align-self: center;
+}
+
+.forms{
+  height: 100vh;
+  width: 40vw;
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  justify-content: space-between;
+}
+
+#card-login{
+  width: 400px;
+  padding: 20px 0 20px 0;
+  background-color: #10558d;
+  border-radius: 20px;
+}
+
+/* .page-login .header {
   width: 100%;
 }
 .page-login .header .bar {
@@ -585,7 +613,7 @@ main.page h1 {
   position: absolute;
   top: 40%;
   width: 100%;
-}
+} */
 
 .brasao img {
   width: 200px;
@@ -593,7 +621,7 @@ main.page h1 {
 
 .perfil-quartel {
   width: 100%;
-  displa: flex;
+  display: flex;
   flex-direction: column;
   height: 100%;
   overflow-y: scroll;
@@ -602,7 +630,7 @@ main.page h1 {
 .perfil-quartel > * {
   width: 100%;
   padding: 10px 10px;
-  background-color: #0a8967;
+  background-color: #555555;
   border-radius: 20px;
 }
 .perfil-quartel .infos-personal {
@@ -635,7 +663,7 @@ main.page h1 {
 .perfil-quartel .infos-geral .col {
   width: 30%;
   padding: 10px 10px;
-  background-color: #09c184;
+  background-color: #555555;
   border-radius: 20px;
 }
 .perfil-quartel .infos-geral .col h2 {
@@ -658,3 +686,86 @@ h3, h2 {
   color: #fcfcfc;
   margin: 10px 0 10px;
 }
+
+#dashboard-tudo{
+  display: flex;
+  justify-content: space-between;
+  padding: 0px;
+}
+
+#dashboard-graficos{
+  margin: 0 10 0 10;
+}
+
+#dashboard-dados{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  color: #fcfcfc;
+}
+
+#primeiro-grafico{
+  padding: 10px;
+  background-color: #555555;
+  border-radius: 10px;
+}
+
+#segundo-grafico{
+  padding: 10px;
+  background-color: #555555;
+  border-radius: 10px;
+}
+/* Estilo das Tabelas */
+
+* {
+  /* Change your font family */
+  font-family: sans-serif;
+}
+
+.content-table {
+  border-collapse: collapse;
+  margin: 0;
+  font-size: 0.9em;
+  min-width: 300px;
+  border-radius: 5px 5px 0 0;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  color: #fcfcfc;
+}
+
+.content-table thead tr {
+  background-color: #003551;
+  color: #fcfcfc;
+  font-weight: bold;
+}
+
+.content-table th,
+.content-table td {
+  padding: 12px 15px;
+}
+
+/* .content-table tbody tr {
+  border-bottom: 1px solid #dddddd;
+} */
+
+/* .content-table tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+} */
+
+.content-table tbody tr:last-of-type {
+  border-bottom: 2px solid #003551;
+}
+
+.content-table tbody tr.active-row {
+  font-weight: bold;
+  color: #fcfcfc;
+}
+
+#title{
+  font-size: larger;
+  text-align: center;
+}
+
+/* FIM DO CSS DAS TABELAS */

@@ -1,5 +1,5 @@
 ACCESS_LEVEL = {
-    0: "The OneAboveAll",
+    0: "Master",
     1: "Admin", 
     2: "Subordinado",
 }

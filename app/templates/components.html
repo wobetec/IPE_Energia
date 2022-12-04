@@ -132,7 +132,9 @@
                     {% if session.quartel.quartel_id != session.main.quartel_id %}
                         <a href="{{'/quartel/select/' + session.main.sigla}}">Voltar para {{ session.main.sigla | sigla }}</a>
                     {% endif %}
-                    <a href="/quartel_profile">Perfil da OM</a>
+                    {% if session.quartel.quartel_id != 1 %}
+                        <a href="/quartel_profile">Perfil da OM</a>
+                    {% endif %}
                     <a href="/profile">Perfil</a>
                     <a href="/logout">Log Out</a>
                 </div>

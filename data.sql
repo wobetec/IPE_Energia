@@ -42,7 +42,7 @@ INSERT INTO concessionarias_tarifas (grupo_tarifario, modalidade, subgrupo, conc
 
 
 
-INSERT INTO quarteis (name, sigla, concessionaria_id) VALUES("Luxium", "LUX", 1);
+INSERT INTO quarteis (name, sigla, concessionaria_id, tem_subordinado, tem_geracao_distribuida) VALUES("Luxium", "LUX", 1,1,1);
 
 -- inicia o povoamento do grafo
 ALTER TABLE hierarquia ADD LUX INTEGER NOT NULL DEFAULT 0;
