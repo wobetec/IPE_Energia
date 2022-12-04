@@ -131,7 +131,22 @@ def despesaEdit(id=None):
         demanda_consumida_ponta = request.form.get("demanda_consumida_ponta")
         demanda_consumida_fora_ponta = request.form.get("demanda_consumida_fora_ponta")
 
-        
+        db.execute("UPDATE despesas SET valor=?, multa=?, data_fatura=? WHERE id=?",
+            valor,
+            multa,
+            data_fatura,
+            id
+        )
+        db.execute("UPDATE despesas_consumo SET energia_ativa = ? , energia_reativa = ? , ponta = ? , fora_ponta = ? , demanda_consumida = ? , demanda_consumida_ponta = ? , demanda_consumida_fora_ponta = ? WHERE despesa_id=?",
+            energia_ativa,
+            energia_reativa,
+            ponta,
+            fora_ponta,
+            demanda_consumida,
+            demanda_consumida_ponta,
+            demanda_consumida_fora_ponta,
+            id
+        )
 
         return redirect("/despesa/list")
 

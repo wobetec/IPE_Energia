@@ -24,6 +24,7 @@ def quartelAdd():
     if request.method == "POST":
         name = request.form.get("name")
         sigla = request.form.get("sigla")
+        sigla = sigla.replace(" ", "_")
         efetivo = request.form.get("efetivo")
         area = request.form.get("area")
 
@@ -107,7 +108,7 @@ def quartelAdd():
 @login_required
 def quartelSelect(sigla):
     data = db.execute(
-        "SELECT id, sigla, area, efetivo, name, brasao FROM quarteis WHERE sigla=?",
+        "SELECT * FROM quarteis WHERE sigla=?",
         sigla,
     )[0]
 

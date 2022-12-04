@@ -1,0 +1,462 @@
+{% extends "index.html" %}
+
+{% set g = {
+    "page":"concessionarias",
+    "abas":{
+        "list":{
+            "title":"Listar",
+            "id":"list",
+            "action":"/concessionarias/list"
+        },
+        "add":{
+            "title":"Adicionar",
+            "id":"add",
+            "action":"/concessionarias/add"
+        },
+        "tarifas":{
+            "title":"Tarifas",
+            "id":"tarifas",
+            "action":""
+        },
+        "add_tarifa":{
+            "title":"Adicionar Tarifa",
+            "id":"add_tarifa",
+            "action":""
+        },
+        "edit":{
+            "title":"Editar",
+            "id":"edit",
+            "action":""
+        },
+    },
+    "selected_aba":aba
+
+} %}
+
+{% if aba not in ["tarifas", "edit", "add_tarifa"] %}
+    {% set temp = g.abas.pop("tarifas") %}
+{% endif %}
+{% if aba != "edit" %}
+    {% set temp = g.abas.pop("edit") %}
+{% endif %}
+{% if aba != "add_tarifa" %}
+    {% set temp = g.abas.pop("add_tarifa") %}
+{% endif %}
+
+
+{% block page %}
+
+    {% if aba == "add" %}
+        {{ add() }}
+    {% elif aba == "list" %}
+        {{ list() }}
+    {% elif aba == "tarifas" %}
+        {{ tarifas() }}
+    {% elif aba == "add_tarifa" %}
+        {{ add_tarifa() }}
+    {% elif aba == "edit" %}
+        {{ edit() }}
+    {% endif %}
+
+
+{% endblock %}
+
+
+{% macro add() %}
+    <form action="/concessionarias/add" method="post">
+        <div class="field-container">
+            <div class="field-name">
+                <label for="fieldName">Nome</label>
+            </div>
+            <div class="field-input">
+                <input type="text" class="only" name="name" placeholder="Nome" >
+            </div>
+        </div>
+        <button class="btn btn-primary" type="submit">Adicionar</button>
+    </form>
+{% endmacro %}
+
+
+{% macro list() %}
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for concessionaria in concessionarias %}
+                <tr>
+                    <td>{{ concessionaria["name"] }}</td>
+                    <td>
+                        <a href={{ "/concessionarias/tarifas/"+ concessionaria["id"]|string }}>
+                            <button>TARIFAS</button>
+                        </a>
+                    </td>
+                    <td>
+                        <a href={{ "/concessionarias/delete/"+ concessionaria["id"]|string }}>
+                            <button>DEL</button>
+                        </a>
+                    </td>
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endmacro %}
+
+{% macro tarifas() %}
+<h2>{{ concessionaria["name"] }}</h2>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Grupo Tarifario</th>
+                    <th>Modalidade</th>
+                    <th>Subgrupo</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for tarifas in concessionarias_tarifas %}
+                <tr>
+                    <td>{{ tarifas["grupo_tarifario"] }}</td>
+                    <td>{{ tarifas["modalidade"] }}</td>
+                    <td>{{ GRUPOS_TARIFARIOS[tarifas["grupo_tarifario"]].SUBGRUPO[tarifas["subgrupo"]] }}</td>
+                    <td>
+                        <a href={{ "/concessionarias/tarifas/"+ concessionaria["id"]|string + "/edit/" + tarifas["id"]|string}}>
+                            <button>EDIT</button>
+                        </a>
+                    </td>
+                    <td>
+                        <a href={{ "/concessionarias/tarifas/"+ concessionaria["id"]|string + "/delete/" + tarifas["id"]|string}}>
+                            <button>DEL</button>
+                        </a>
+                    </td>
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <a href={{ "/concessionarias/tarifas/"+ concessionaria["id"]|string + "/add" }}>
+        <button>Adicionar</button>
+    </a>
+{% endmacro %}
+
+
+{% macro add_tarifa() %}
+    <h2>{{ concessionaria["name"] }}</h2>
+    <form action={{"/concessionarias/tarifas/"+concessionaria["id"]|string + "/add" }} method="post">
+        <div class="field-container">
+            <div class="field-name">
+                <label for="fieldName">Grupo Tarifario:</label>
+            </div>
+            <div class="field-input">
+                <select name="grupo_tarifario" id="grupo_tarifario" class="only" onChange="changeGrupoTarifa()">
+                    <option disable selected>Grupo</option>
+                    {% for grupo in GRUPOS_TARIFARIOS %}
+                        <option value="{{grupo}}" >{{grupo}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <script type="text/javascript">
+                
+                function changeGrupoTarifa(){
+                    var field_modalidade1 = document.getElementById("modalidade1")
+                    var option = document.getElementById("grupo_tarifario").value
+                    
+                    changeModalidade()
+
+                    if(option == "A"){
+                        field_modalidade1.style.display = "flex"
+                    }else{
+                        field_modalidade1.style.display = "none"
+                        // document.getElementById("verde").style.display = "none"
+                        // document.getElementById("azul").style.display = "none"
+                    }
+
+                    var selectSubgrupo = document.getElementById("subgrupo")
+                    for(let i = selectSubgrupo.options.length; i >= 1; i--){
+                        selectSubgrupo.remove(i);
+                    }
+        
+                    var subgrupos = {{ GRUPOS_TARIFARIOS|tojson  }}[option].SUBGRUPO
+                    var size = Object.keys(subgrupos).length
+
+                    for(let i = 1; i <= size; i++){
+                        let newOption = new Option(subgrupos[i], i)
+                        selectSubgrupo.add(newOption, undefined)
+                    }
+
+                    if(option == "A"){
+                        document.getElementById("A").style.display = "block"
+                        document.getElementById("B").style.display = "none"
+                    }else if(option == "B"){
+                        document.getElementById("B").style.display = "block"
+                        document.getElementById("A").style.display = "none"
+                    }else{
+                        document.getElementById("B").style.display = "none"
+                        document.getElementById("A").style.display = "none"
+                    }
+                }
+            </script>
+        </div>
+        <div class="field-container" id="modalidade1" style="display: none">
+            <div class="field-name">
+                <label for="fieldName">Modalidade:</label>
+            </div>
+            <div class="field-input">
+                <select name="modalidade" id="modalidade" class="only" onChange="changeModalidade()">
+                    <option disable selected>Modalidade</option>
+                    {% for mod in GRUPOS_TARIFARIOS.A.MODALIDADE_CONTRATADA %}
+                        <option value="{{mod}}" >{{mod}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <script type="text/javascript">
+                
+                function changeModalidade(){
+                    var option = document.getElementById("modalidade").value
+                    
+                    if(option == "Azul"){
+                        document.getElementById("azul").style.display = "block"
+                        document.getElementById("verde").style.display = "none"
+                    }else if(option == "Verde"){
+                        document.getElementById("verde").style.display = "block"
+                        document.getElementById("azul").style.display = "none"
+                    }else{
+                        document.getElementById("verde").style.display = "none"
+                        document.getElementById("azul").style.display = "none"
+                    }
+                }
+            </script>
+        </div>
+        <div class="field-container">
+            <div class="field-name">
+                <label for="fieldName">Subgrupo:</label>
+            </div>
+            <div class="field-input">
+                <select name="subgrupo" id="subgrupo" class="only" >
+                    <option disable selected>Subgrupo</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="conditional-fields">
+            <h2>Tarifas</h2>
+            <div class="conditional-fields" id="B" style="display: none">
+                <div class="field-container">
+                    <div class="field-name">
+                        <label for="fieldName">Consumo B:</label>
+                    </div>
+                    <div class="field-input">
+                        <span class="before">R$</span>
+                        <input autocomplete="off" autofocus class="after" name="consumo_b" placeholder="Consumo B" type="number">
+                    </div>
+                </div>
+            </div>
+            <div class="conditiaonal-fields" id="A" style="display: none">
+                <div class="field-container">
+                    <div class="field-name">
+                        <label for="fieldName">Consumo Ponta:</label>
+                    </div>
+                    <div class="field-input">
+                        <span class="before">R$</span>
+                        <input autocomplete="off" autofocus class="after" name="consumo_ponta" placeholder="Consumo Ponta" type="number">
+                    </div>
+                </div>
+                <div class="field-container">
+                    <div class="field-name">
+                        <label for="fieldName">Consumo Fora Ponta:</label>
+                    </div>
+                    <div class="field-input">
+                        <span class="before">R$</span>
+                        <input autocomplete="off" autofocus class="after" name="consumo_fora_ponta" placeholder="Consumo Fora Ponta" type="number">
+                    </div>
+                </div>
+                <div class="conditional-fields" id="azul" style="display: none">
+                    <div class="field-container">
+                        <div class="field-name">
+                            <label for="fieldName">Demanda Ponta:</label>
+                        </div>
+                        <div class="field-input">
+                            <span class="before">R$</span>
+                            <input autocomplete="off" autofocus class="after" name="demanda_ponta" placeholder="Demanda Ponta" type="number">
+                        </div>
+                    </div>
+                    <div class="field-container">
+                        <div class="field-name">
+                            <label for="fieldName">Demanda Fora Ponta:</label>
+                        </div>
+                        <div class="field-input">
+                            <span class="before">R$</span>
+                            <input autocomplete="off" autofocus class="after" name="demanda_fora_ponta" placeholder="Demanda Fora Ponta" type="number">
+                        </div>
+                    </div>
+                    <div class="field-container">
+                        <div class="field-name">
+                            <label for="fieldName">Ultrapassagem Demanda Ponta:</label>
+                        </div>
+                        <div class="field-input">
+                            <span class="before">R$</span>
+                            <input autocomplete="off" autofocus class="after" name="ultrapassagem_demanda_ponta" placeholder="Ultrapassagem Demanda Ponta" type="number">
+                        </div>
+                    </div>
+                    <div class="field-container">
+                        <div class="field-name">
+                            <label for="fieldName">Ultrapassagem Demanda Fora Ponta:</label>
+                        </div>
+                        <div class="field-input">
+                            <span class="before">R$</span>
+                            <input autocomplete="off" autofocus class="after" name="ultrapassagem_demanda_fora_ponta" placeholder="Ultrapassagem Demanda Fora Ponta" type="number">
+                        </div>
+                    </div>
+                </div>
+                <div class="conditional-fields" id="verde" style="display: none">
+                    <div class="field-container">
+                        <div class="field-name">
+                            <label for="fieldName">Demanda Verde:</label>
+                        </div>
+                        <div class="field-input">
+                            <span class="before">R$</span>
+                            <input autocomplete="off" autofocus class="after" name="demanda_verde" placeholder="Demanda Verde" type="number">
+                        </div>
+                    </div>
+                    <div class="field-container">
+                        <div class="field-name">
+                            <label for="fieldName">Ultrapassagem Demanda Verde:</label>
+                        </div>
+                        <div class="field-input">
+                            <span class="before">R$</span>
+                            <input autocomplete="off" autofocus class="after" name="ultrapassagem_demanda_verde" placeholder="Ultrapassagem Demanda Verde" type="number">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <button class="btn btn-primary" type="submit">Adicionar</button>
+    </form>
+{% endmacro %}
+
+{% macro edit() %}
+    <h2>{{ concessionaria["name"] }}</h2>
+    <h3>Grupo Tarifário: {{tarifa.grupo_tarifario}}</h3>
+    {% if tarifa.grupo_tarifario == "A" %}
+        <h3>Modalidade: {{ tarifa.modalidade }}</h3>
+    {% endif %}
+    <h3>Subgrupo: {{ GRUPOS_TARIFARIOS[tarifa.grupo_tarifario].SUBGRUPO[tarifa.subgrupo] }}</h3>
+    <form action={{"/concessionarias/tarifas/" + concessionaria["id"] | string + "/edit/" + tarifa["id"] | string }} method="post">
+        <div class="conditional-fields">
+            <h2>Tarifas</h2>
+            {% if tarifa.grupo_tarifario == "B" %}
+                <div class="conditional-fields" id="B">
+                    <div class="field-container">
+                        <div class="field-name">
+                            <label for="fieldName">Consumo B:</label>
+                        </div>
+                        <div class="field-input">
+                            <span class="before">R$</span>
+                            <input autocomplete="off" autofocus class="after" name="consumo_b" placeholder="Consumo B" type="number" value={{tarifa["consumo_b"]}}>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            {% if tarifa.grupo_tarifario == "A" %}
+                <div class="conditiaonal-fields" id="A">
+                    <div class="field-container">
+                        <div class="field-name">
+                            <label for="fieldName">Consumo Ponta:</label>
+                        </div>
+                        <div class="field-input">
+                            <span class="before">R$</span>
+                            <input autocomplete="off" autofocus class="after" name="consumo_ponta" placeholder="Consumo Ponta" type="number" value={{tarifa["consumo_ponta"]}}>
+                        </div>
+                    </div>
+                    <div class="field-container">
+                        <div class="field-name">
+                            <label for="fieldName">Consumo Fora Ponta:</label>
+                        </div>
+                        <div class="field-input">
+                            <span class="before">R$</span>
+                            <input autocomplete="off" autofocus class="after" name="consumo_fora_ponta" placeholder="Consumo Fora Ponta" type="number" value={{tarifa["consumo_fora_ponta"]}}>
+                        </div>
+                    </div>
+                    {% if tarifa.modalidade == "Azul" %}
+                        <div class="conditional-fields" id="azul">
+                            <div class="field-container">
+                                <div class="field-name">
+                                    <label for="fieldName">Demanda Ponta:</label>
+                                </div>
+                                <div class="field-input">
+                                    <span class="before">R$</span>
+                                    <input autocomplete="off" autofocus class="after" name="demanda_ponta" placeholder="Demanda Ponta" type="number" value={{tarifa["demanda_ponta"]}}>
+                                </div>
+                            </div>
+                            <div class="field-container">
+                                <div class="field-name">
+                                    <label for="fieldName">Demanda Fora Ponta:</label>
+                                </div>
+                                <div class="field-input">
+                                    <span class="before">R$</span>
+                                    <input autocomplete="off" autofocus class="after" name="demanda_fora_ponta" placeholder="Demanda Fora Ponta" type="number" value={{tarifa["demanda_fora_ponta"]}}>
+                                </div>
+                            </div>
+                            <div class="field-container">
+                                <div class="field-name">
+                                    <label for="fieldName">Ultrapassagem Demanda Ponta:</label>
+                                </div>
+                                <div class="field-input">
+                                    <span class="before">R$</span>
+                                    <input autocomplete="off" autofocus class="after" name="ultrapassagem_demanda_ponta" placeholder="Ultrapassagem Demanda Ponta" type="number" value={{tarifa["ultrapassagem_demanda_ponta"]}}>
+                                </div>
+                            </div>
+                            <div class="field-container">
+                                <div class="field-name">
+                                    <label for="fieldName">Ultrapassagem Demanda Fora Ponta:</label>
+                                </div>
+                                <div class="field-input">
+                                    <span class="before">R$</span>
+                                    <input autocomplete="off" autofocus class="after" name="ultrapassagem_demanda_fora_ponta" placeholder="Ultrapassagem Demanda Fora Ponta" type="number" value={{tarifa["ultrapassagem_demanda_fora_ponta"]}}>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if tarifa.modalidade == "Verde" %}
+                        <div class="conditional-fields" id="verde">
+                            <div class="field-container">
+                                <div class="field-name">
+                                    <label for="fieldName">Demanda Verde:</label>
+                                </div>
+                                <div class="field-input">
+                                    <span class="before">R$</span>
+                                    <input autocomplete="off" autofocus class="after" name="demanda_verde" placeholder="Demanda Verde" type="number" value={{tarifa["demanda_verde"]}}>
+                                </div>
+                            </div>
+                            <div class="field-container">
+                                <div class="field-name">
+                                    <label for="fieldName">Ultrapassagem Demanda Verde:</label>
+                                </div>
+                                <div class="field-input">
+                                    <span class="before">R$</span>
+                                    <input autocomplete="off" autofocus class="after" name="ultrapassagem_demanda_verde" placeholder="Ultrapassagem Demanda Verde" type="number" value={{tarifa["ultrapassagem_demanda_verde"]}}>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+
+        <button class="btn btn-primary" type="submit">Atualizar</button>
+    </form>
+{% endmacro %}
+
+

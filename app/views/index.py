@@ -1,16 +1,10 @@
 from app import app, db
-from flask import redirect, render_template, request, session, url_for, g
-import os
-from werkzeug.security import check_password_hash, generate_password_hash
-from werkzeug.utils import secure_filename
+from flask import render_template
 from app.helpers import (
-    apology,
     login_required,
-    recursive_get_subordinados,
     access_level_required,
 )
-from app.var import ACCESS_LEVEL
-
+from datetime import datetime
 
 @app.route("/", methods=["GET", "POST"])
 @login_required

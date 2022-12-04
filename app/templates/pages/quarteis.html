@@ -118,7 +118,6 @@
                     }
         
                     var subgrupos = {{ GRUPOS_TARIFARIOS|tojson  }}[option].SUBGRUPO
-                    console.log(subgrupos)
                     var size = Object.keys(subgrupos).length
 
                     for(let i = 1; i <= size; i++){
@@ -166,7 +165,8 @@
                     <label for="fieldName">Úmida Ponta:</label>
                 </div>
                 <div class="field-input">
-                    <input autocomplete="off" autofocus class="only" name="umida_ponta" placeholder="Úmida Ponta" type="number">
+                    <input autocomplete="off" autofocus class="before" name="umida_ponta" placeholder="Úmida Ponta" type="number">
+                    <span class="after">kW</span>
                 </div>
             </div>
             <div class="field-container">
@@ -174,7 +174,8 @@
                     <label for="fieldName">Úmida Fora Ponta:</label>
                 </div>
                 <div class="field-input">
-                    <input autocomplete="off" autofocus class="only" name="umida_fora_ponta" placeholder="Úmida Fora Ponta" type="number">
+                    <input autocomplete="off" autofocus class="before" name="umida_fora_ponta" placeholder="Úmida Fora Ponta" type="number">
+                    <span class="after">kW</span>
                 </div>
             </div>
             <div class="field-container">
@@ -182,7 +183,8 @@
                     <label for="fieldName">Seca Ponta:</label>
                 </div>
                 <div class="field-input">
-                    <input autocomplete="off" autofocus class="only" name="seca_ponta" placeholder="Seca Ponta" type="number">
+                    <input autocomplete="off" autofocus class="before" name="seca_ponta" placeholder="Seca Ponta" type="number">
+                    <span class="after">kW</span>
                 </div>
             </div>
             <div class="field-container">
@@ -190,7 +192,8 @@
                     <label for="fieldName">Seca Fora Ponta:</label>
                 </div>
                 <div class="field-input">
-                    <input autocomplete="off" autofocus class="only" name="seca_fora_ponta" placeholder="Seca Fora Ponta" type="number">
+                    <input autocomplete="off" autofocus class="before" name="seca_fora_ponta" placeholder="Seca Fora Ponta" type="number">
+                    <span class="after">kW</span>
                 </div>
             </div>
         </div>
@@ -202,7 +205,8 @@
                     <label for="fieldName">Úmida:</label>
                 </div>
                 <div class="field-input">
-                    <input autocomplete="off" autofocus class="only" name="umida" placeholder="Úmida" type="number">
+                    <input autocomplete="off" autofocus class="before" name="umida" placeholder="Úmida" type="number">
+                    <span class="after">kW</span>
                 </div>
             </div>
             <div class="field-container">
@@ -210,7 +214,8 @@
                     <label for="fieldName">Seca:</label>
                 </div>
                 <div class="field-input">
-                    <input autocomplete="off" autofocus class="only" name="seca" placeholder="Seca" type="number">
+                    <input autocomplete="off" autofocus class="before" name="seca" placeholder="Seca" type="number">
+                    <span class="after">kW</span>
                 </div>
             </div>
         </div>
@@ -281,7 +286,7 @@
                 {% else %}
                     <img src={{url_for('static', filename="images/brasoes/"+subdict[sub].brasao)}} alt=""> 
                 {% endif %}
-                <span>{{sub}}</span>
+                <span>{{sub | sigla}}</span>
             </a>
             {% if subdict[sub].subs|length %}
                 <ul>

@@ -139,7 +139,7 @@ def userAdd():
         elif password == "" or password != confirmation:
             return apology("Password is blank or the passwords do not match")
         
-        elif access_level <= session["main"]["access_level"]:
+        elif access_level < session["main"]["access_level"]:
             return apology("forbiden")
 
         else:

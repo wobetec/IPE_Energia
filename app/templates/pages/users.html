@@ -75,7 +75,7 @@
                 <select name="access_level" class="only" >
                     <option disable selected>Access</option>
                     {% for option in ACCESS_LEVEL %}
-                        {% if option > session.main.access_level %}
+                        {% if option >= session.main.access_level %}
                             <option value="{{option}}" >{{ACCESS_LEVEL[option]}}</option>
                         {% endif %}
                     {% endfor %}

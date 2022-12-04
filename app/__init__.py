@@ -18,9 +18,11 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 # custom jinja
 app.jinja_env.filters["brl"] = filters.brl  # real
 app.jinja_env.filters["kwh"] = filters.kwh  # energia
+app.jinja_env.filters["kw"] = filters.kw  # energia
 app.jinja_env.filters["m2"] = filters.m2  # energia
 app.jinja_env.filters["date"] = filters.date  # energia
 app.jinja_env.filters["sn"] = filters.sn  # Sim e Não
+app.jinja_env.filters["sigla"] = filters.sigla  # Sim e Não
 
 import app.var as var
 @app.context_processor

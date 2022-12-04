@@ -652,3 +652,9 @@ main.page h1 {
 .perfil-quartel .infos-geral .col .row .dado {
   margin-left: 30px;
 }
+
+h3, h2 {
+  text-align: center;
+  color: #fcfcfc;
+  margin: 10px 0 10px;
+}

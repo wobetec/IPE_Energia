@@ -313,7 +313,7 @@
         </div>
         <div class="dados">
             <h1>{{ session.quartel.name }}</h1>
-            <h2>{{ session.quartel.sigla }}</h2>
+            <h2>{{ session.quartel.sigla | sigla }}</h2>
         </div>
     </div>
     <div class="infos-geral">
@@ -364,29 +364,29 @@
                 {% if infos.modalidade == "Azul" %}
                     <div class="row">
                         <span class="title">Úmida Ponta:</span>
-                        <span class="dado">{{ demandas.umida_ponta | kwh }}</span>
+                        <span class="dado">{{ demandas.umida_ponta | kw }}</span>
                     </div>
                     <div class="row">
                         <span class="title">Úmida Fora Ponta:</span>
-                        <span class="dado">{{ demandas.umida_fora_ponta | kwh }}</span>
+                        <span class="dado">{{ demandas.umida_fora_ponta | kw }}</span>
                     </div>
                     <div class="row">
                         <span class="title">Seca Ponta:</span>
-                        <span class="dado">{{ demandas.seca_ponta | kwh }}</span>
+                        <span class="dado">{{ demandas.seca_ponta | kw }}</span>
                     </div>
                     <div class="row">
                         <span class="title">Seca Fora Ponta:</span>
-                        <span class="dado">{{ demandas.seca_fora_ponta | kwh }}</span>
+                        <span class="dado">{{ demandas.seca_fora_ponta | kw }}</span>
                     </div>
                 {% endif %}
                 {% if infos.modalidade == "Verde" %}
                     <div class="row">
                         <span class="title">Úmida:</span>
-                        <span class="dado">{{ demandas.umida | kwh }}</span>
+                        <span class="dado">{{ demandas.umida | kw }}</span>
                     </div>
                     <div class="row">
                         <span class="title">Seca:</span>
-                        <span class="dado">{{ demandas.seca | kwh }}</span>
+                        <span class="dado">{{ demandas.seca | kw }}</span>
                     </div>
                 {% endif %}
             {% endif %}

@@ -62,6 +62,12 @@ class filters():
             return ""
         return f"{value:,.2f}kWh"
 
+    def kw(value):
+        """Format value as energy in kwh"""
+        if value == None:
+            return ""
+        return f"{value:,.2f}kW"
+
     def m2(value):
         """Format value as energy in kwh"""
         return f"{value:,.2f}m\u00b2"
@@ -76,6 +82,11 @@ class filters():
         year = value[:4]
         month = value[5:7]
         return f"{month}/{year}"
+    
+    def sigla(value):
+        spaces = value.replace("_", " ")
+        #bolinha = spaces.replace("°", "")
+        return spaces
 
 
 
