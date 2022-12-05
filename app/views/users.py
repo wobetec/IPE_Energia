@@ -180,12 +180,12 @@ def userEdit(id=None):
     return render_template("pages/users.html", aba="edit", user=user)
 
 
-@app.route("/users/delete/<int:id>", methods=["POST"])
+@app.route("/users/delete/<int:id>", methods=["GET"])
 @login_required
 @access_level_required(1)
 def userDelete(id=None):
 
-    access_level = db.execute("SELECT access_level FROM users WHERE id=?", id)
+    access_level = db.execute("SELECT access_level FROM users WHERE id=?", id)[0]['access_level']
 
     if access_level <= session["main"]["access_level"]:
             return apology("forbiden")
