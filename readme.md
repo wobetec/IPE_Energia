@@ -46,6 +46,6 @@
         <br></br>
         &emsp;&emsp;&emsp;&emsp;senha: senha (a que foi atribuída na url)
   <br></br>
-  &emsp;&emsp;Daí em diante, basta continuar utilizando normalmente o site, porém cadastrando todas as concessionárias e tarifas necessárias para utilizar nas OMs posteriormente cadastradas.
+  &emsp;&emsp;Daí em diante, basta continuar utilizando normalmente o site, porém cadastrando todas as concessionárias e tarifas necessárias para utilizar nas OMs que posteriormente serão cadastradas.
   
         
