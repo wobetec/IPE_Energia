@@ -1,12 +1,10 @@
 # Inicializando o programa na máquina física
 
 
-### Instalação e clonagem do repositório
-  &emsp;&emsp;Primeiramente, verifique se sua máquina possui a linguagem de programação PYTHON e o sistema de controle de versões GIT instalados em sua versão mais recente.
-  <br></br>
-  &emsp;&emsp;Agora, devemos clonar o github em questão, a partir do comando:
-        <br></br>
-        &emsp;&emsp;&emsp;&emsp;git clone <url-do-repositório>
+## Instalação e clonagem do repositório
+Primeiramente, verifique se sua máquina possui a linguagem de programação Python e o sistema de controle de versões GIT instalados em sua versão mais recente.
+Agora, devemos clonar o github em questão, a partir do comando:
+  git clone https://github.com/wobetec/IPE_Energia
   <br></br>
   &emsp;&emsp;Em caso afirmativo, crie um ambiente virtual, ou "venv", a partir do seguinte comando:
         <br></br>
