@@ -34,7 +34,7 @@ Após estar com a base de dados limpa, aplique o seguinte comando:
   
 Assim, na tela de login, utilize o comando de exemplo a seguir:
         
-	http://127.0.0.1:5000/register/esdras/senha
+	http:/localhost:5000/register/esdras/senha
   
 Assim, você terá um login e senha do seguinte modo:
         
